@@ -1,0 +1,256 @@
+/* Lead Capture Popup Styles - CACHE BUST 2024-12-25 06:30 */
+.lead-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.lead-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lead-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 2001;
+    width: 90%;
+    max-width: 400px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.lead-popup-overlay.active .lead-popup {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
+
+.lead-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 30px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.lead-popup-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.lead-popup-close {
+    background: #ff0000;
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.lead-popup-close:hover {
+    background: #cc0000;
+}
+
+/* Ensure close button is always clickable */
+.lead-popup-close {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    z-index: 1000 !important;
+    position: relative !important;
+}
+
+.lead-popup-close:active {
+    background: #990000 !important;
+    transform: scale(0.95);
+}
+
+.lead-form {
+    padding: 30px;
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Simple Form Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="email"] {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 2px solid #d1d5db !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    color: #374151 !important;
+    background: white !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    min-height: 44px !important;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="tel"]:focus,
+.form-group input[type="email"]:focus {
+    outline: none;
+    border-color: #dc2626;
+}
+
+.lead-submit-btn {
+    width: 100%;
+    background: #dc2626;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.lead-submit-btn:hover {
+    background: #b91c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+}
+
+/* Thank You Section Styles */
+.thank-you-content {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.thank-you-icon {
+    margin-bottom: 20px;
+}
+
+.thank-you-icon i {
+    font-size: 64px;
+    color: #10b981;
+}
+
+.thank-you-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+}
+
+.thank-you-content p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 24px 0;
+    line-height: 1.5;
+}
+
+#closeLeadThankYou {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#closeLeadThankYou:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* Checkbox Styling */
+.checkbox-group {
+    margin: 20px 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+    vertical-align: top;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #374151;
+    cursor: pointer;
+    display: inline;
+    font-weight: normal;
+}
+
+.checkbox-group label a {
+    color: #dc2626;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.checkbox-group label a:hover {
+    text-decoration: underline;
+}
+
+/* Error message styling */
+#termsError {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Force phone input visibility */
+#leadPhone {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 44px !important;
+    padding: 12px 16px !important;
+    border: 2px solid #d1d5db !important;
+    border-radius: 8px !important;
+    background: white !important;
+    color: #374151 !important;
+    font-size: 14px !important;
+    box-sizing: border-box !important;
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Innovolt</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header placeholder - will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Compare Cars Popup -->
+    <div class="compare-popup-overlay" id="comparePopupOverlay">
+        <div class="compare-popup" id="comparePopup">
+            <div class="compare-popup-header">
+                <h3>Compare Vehicles</h3>
+                <button class="compare-popup-close" id="comparePopupClose" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="compare-vehicles-container" id="compareVehiclesContainer">
+                <!-- Compare vehicles will be dynamically generated here -->
+            </div>
+            <div class="compare-actions">
+                <button class="compare-now-btn" id="compareNowBtn" type="button">Compare Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparison Results Popup -->
+    <div class="comparison-results-overlay" id="comparisonResultsOverlay">
+        <div class="comparison-results-popup" id="comparisonResultsPopup">
+            <div class="comparison-results-header">
+                <h3>Vehicle Comparison</h3>
+                <button class="comparison-results-close" id="comparisonResultsClose" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="comparison-table-container" id="comparisonTableContainer">
+                <!-- Comparison table will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Liked Cars Popup -->
+    <div class="liked-cars-overlay" id="likedCarsOverlay">
+        <div class="liked-cars-popup" id="likedCarsPopup">
+            <div class="liked-cars-header">
+                <h3>Cars You Liked</h3>
+                <button class="liked-cars-close" id="likedCarsClose" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="liked-cars-container" id="likedCarsContainer">
+                <!-- Liked cars will be dynamically generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- About Us Page Content -->
+    <main class="about-main">
+        <!-- Hero Cover Section -->
+        <section class="about-hero">
+            <div class="about-hero-overlay">
+                <div class="about-hero-content">
+                    <h1 class="about-hero-title">Your Destination for Affordable</h1>
+                    <h2 class="about-hero-subtitle">Second Hand Electric 3-Wheeler</h2>
+                    <p class="about-hero-tagline">
+                        <span class="highlight-text">NO.1 used 3W EV Market</span> Place in India.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Content Section -->
+        <section class="about-content">
+            <div class="container">
+                <div class="content-wrapper">
+                    <h2 class="section-heading">About Us</h2>
+                    <p class="content-paragraph">
+                        Welcome to Innovolt, India's leading marketplace for used commercial electric vehicles (EVs). Our motive is to transform the transportation industry with eco-friendly and cost-effective mobility solutions that benefit both your business and the environment.
+                    </p>
+                    <p class="content-paragraph">
+                        What started as a simple idea to make electric mobility accessible has grown into a premier destination for a wide range of refurbished electric three-wheelers from top brands. Today, Innovolt proudly serves businesses across India, expanding our inventory to meet the rising demand for sustainable transportation options.
+                    </p>
+
+                    <h2 class="section-heading">Our Mission</h2>
+                    <p class="content-paragraph">
+                        We help businesses of every size grow by offering reliable, affordable, and high-quality used electric three-wheelers. Our carefully curated selection is designed to address diverse transportation needs, enabling businesses to adopt sustainable, cost-effective, and innovative solutions for their daily operations.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Get in Touch Section -->
+        <section class="get-in-touch-section">
+            <div class="content-wrapper">
+                <h2 class="get-in-touch-heading">GET IN TOUCH WITH US</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="address-section">
+                            <h3 class="address-heading">Head Office Address:</h3>
+                            <p class="address-text">
+                                Industrial Plot Bearing No 7-A1, 3rd Cross Rd, Devasandra Industrial Estate,<br>
+                                Krishnarajapura, Near VR Mall, Bengaluru, Karnataka - 560048.
+                            </p>
+                        </div>
+                        <div class="support-section">
+                            <h3 class="support-heading">For help and support:</h3>
+                            <p class="support-text">
+                                Email: <a href="mailto:innovoltsales@turno.club" class="contact-link">innovoltsales@turno.club</a><br>
+                                Phone: <a href="tel:08047484881" class="contact-link">080-47484881</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=TURNO+Head+Office,+Industrial+Plot+Bearing+No+7-A1,+3rd+Cross+Rd,+Devasandra+Industrial+Estate,+Krishnarajapura,+Near+VR+Mall,+Bengaluru,+Karnataka+560048&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Sliding Menu (same as homepage) -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="sliding-menu" id="slidingMenu">
+        <div class="menu-header">
+            <div class="menu-logo">
+                <svg width="160" height="50" viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="2" y="35" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#EF4444" font-style="italic" letter-spacing="-0.5px">innovolt</text>
+                </svg>
+            </div>
+            <button class="menu-close" id="menuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#buy-car"><i class="fas fa-car"></i> Buy Car</a></li>
+            <li><a href="#how-it-works"><i class="fas fa-info-circle"></i> How does it work</a></li>
+            <li><a href="about.html"><i class="fas fa-building"></i> About Us</a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact us</a></li>
+        </ul>
+        
+        <!-- Menu Footer Logo -->
+        <div class="menu-footer">
+            <div class="menu-footer-logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="10" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#EF4444" font-style="italic" letter-spacing="-1px">innovolt</text>
+                    <text x="10" y="70" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#94a3b8">India's No.1 Used 3W EV Marketplace</text>
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Call Back Widget -->
+    <div class="call-widget" id="callWidget">
+        <div class="call-widget-header">
+            <h3 id="widgetTitle">Leave a number,</h3>
+            <p id="widgetSubtitle">and we will call you back in 30 minutes!</p>
+            <button class="widget-close" id="widgetClose" type="button">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="widget-content" id="widgetContent">
+            <form class="widget-form" id="widgetForm">
+                <div class="phone-input-widget">
+                    <span class="country-code">+91</span>
+                    <input type="tel" id="widgetPhoneNumber" placeholder="Enter your number" maxlength="10" required>
+                </div>
+                <button type="button" class="submit-btn">Submit</button>
+            </form>
+        </div>
+        <div class="widget-thankyou" id="widgetThankyou" style="display: none;">
+            <div class="thankyou-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Thank you!</h3>
+            <p>We will call you back within 30 minutes.</p>
+        </div>
+    </div>
+
+    <!-- Location Selection Popup (same as homepage) -->
+    <div class="location-popup-overlay" id="locationPopupOverlay"></div>
+    <div class="location-popup" id="locationPopup">
+        <div class="location-popup-header">
+            <h3>Select a city</h3>
+            <button class="popup-close" id="locationPopupClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cities-grid">
+            <div class="city-item" data-city="Bangalore">
+                <div class="city-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <span class="city-name">Bangalore</span>
+            </div>
+            <div class="city-item" data-city="Delhi">
+                <div class="city-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <span class="city-name">Delhi</span>
+            </div>
+            <div class="city-item" data-city="Pune">
+                <div class="city-icon">
+                    <i class="fas fa-city"></i>
+                </div>
+                <span class="city-name">Pune</span>
+            </div>
+            <div class="city-item" data-city="Hyderabad">
+                <div class="city-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <span class="city-name">Hyderabad</span>
+            </div>
+            <div class="city-item" data-city="Lucknow">
+                <div class="city-icon">
+                    <i class="fas fa-mosque"></i>
+                </div>
+                <span class="city-name">Lucknow</span>
+            </div>
+            <div class="city-item" data-city="Kanpur">
+                <div class="city-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <span class="city-name">Kanpur</span>
+            </div>
+            <div class="city-item" data-city="Chennai">
+                <div class="city-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <span class="city-name">Chennai</span>
+            </div>
+            <div class="city-item others-city" data-city="Others">
+                <div class="city-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="city-name">Others</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- Footer placeholder - will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <script src="load-components.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

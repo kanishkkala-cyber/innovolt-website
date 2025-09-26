@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used 3W EVs - Innovolt</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Sliding Menu -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="sliding-menu" id="slidingMenu">
+        <div class="menu-header">
+            <div class="menu-logo">
+                <svg width="160" height="50" viewBox="0 0 160 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="2" y="35" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#EF4444" font-style="italic" letter-spacing="-0.5px">innovolt</text>
+                </svg>
+            </div>
+            <button class="menu-close" id="menuClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="catalogue.html"><i class="fas fa-car"></i> Buy Car</a></li>
+            <li><a href="#how-it-works"><i class="fas fa-info-circle"></i> How does it work</a></li>
+            <li><a href="about.html"><i class="fas fa-building"></i> About Us</a></li>
+            <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact us</a></li>
+        </ul>
+        <div class="menu-footer">
+            <div class="menu-footer-logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
+                <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="10" y="50" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#EF4444" font-style="italic" letter-spacing="-1px">innovolt</text>
+                    <text x="10" y="70" font-family="Arial, sans-serif" font-size="12" font-weight="normal" fill="#94a3b8">India's No.1 Used 3W EV Marketplace</text>
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Call Me Widget -->
+    <div class="call-widget" id="callWidget">
+        <div class="call-widget-content" id="widgetContent">
+            <h3><span class="green-text">Leave a number,</span> <span class="black-text">and we will call you back in 30 minutes!</span></h3>
+            <form class="call-form" id="widgetForm">
+                <div class="input-group">
+                    <span class="country-code">+91</span>
+                    <input type="tel" class="phone-input" id="widgetPhoneNumber" placeholder="Enter your phone number" maxlength="10">
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+            <div class="widget-thankyou" id="widgetThankyou" style="display: none;">
+                <h4>Thank you!</h4>
+                <p>We'll call you back within 30 minutes.</p>
+            </div>
+        </div>
+        <button class="widget-close" id="widgetClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Location Popup -->
+    <div class="location-popup-overlay" id="locationPopupOverlay"></div>
+    <div class="location-popup" id="locationPopup">
+        <div class="location-popup-header">
+            <h3>Top Cities</h3>
+            <button class="popup-close" id="locationPopupClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cities-grid">
+            <div class="city-item" data-city="Bangalore">
+                <div class="city-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <span class="city-name">Bangalore</span>
+            </div>
+            <div class="city-item" data-city="Delhi">
+                <div class="city-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <span class="city-name">Delhi</span>
+            </div>
+            <div class="city-item" data-city="Pune">
+                <div class="city-icon">
+                    <i class="fas fa-city"></i>
+                </div>
+                <span class="city-name">Pune</span>
+            </div>
+            <div class="city-item" data-city="Hyderabad">
+                <div class="city-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <span class="city-name">Hyderabad</span>
+            </div>
+            <div class="city-item" data-city="Lucknow">
+                <div class="city-icon">
+                    <i class="fas fa-mosque"></i>
+                </div>
+                <span class="city-name">Lucknow</span>
+            </div>
+            <div class="city-item" data-city="Kanpur">
+                <div class="city-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <span class="city-name">Kanpur</span>
+            </div>
+            <div class="city-item" data-city="Chennai">
+                <div class="city-icon">
+                    <i class="fas fa-water"></i>
+                </div>
+                <span class="city-name">Chennai</span>
+            </div>
+            <div class="city-item others-city" data-city="Others">
+                <div class="city-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="city-name">Others</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="catalogue-main">
+        <div class="catalogue-container">
+            <!-- Left Sidebar - Filters -->
+            <aside class="filters-sidebar">
+                <div class="filters-header">
+                    <h3>Filters</h3>
+                    <button class="clear-filters-btn" id="clearFilters">Clear All</button>
+                </div>
+
+                <!-- Location Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Location</h4>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="radio" id="location-all" name="location" value="all" checked>
+                            <label for="location-all">All Locations</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-bangalore" name="location" value="Bangalore">
+                            <label for="location-bangalore">Bangalore</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-delhi" name="location" value="Delhi">
+                            <label for="location-delhi">Delhi</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-hyderabad" name="location" value="Hyderabad">
+                            <label for="location-hyderabad">Hyderabad</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-pune" name="location" value="Pune">
+                            <label for="location-pune">Pune</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-lucknow" name="location" value="Lucknow">
+                            <label for="location-lucknow">Lucknow</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-kanpur" name="location" value="Kanpur">
+                            <label for="location-kanpur">Kanpur</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="location-chennai" name="location" value="Chennai">
+                            <label for="location-chennai">Chennai</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Brand</h4>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-all" name="brand" value="all" checked>
+                            <label for="brand-all">All Brands</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-piaggio" name="brand" value="Piaggio">
+                            <label for="brand-piaggio">Piaggio</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-mahindra" name="brand" value="Mahindra">
+                            <label for="brand-mahindra">Mahindra</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-etrio" name="brand" value="Etrio">
+                            <label for="brand-etrio">Etrio</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-euler" name="brand" value="Euler">
+                            <label for="brand-euler">Euler</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-montra" name="brand" value="Montra Super Auto">
+                            <label for="brand-montra">Montra Super Auto</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-piaggio-ecity" name="brand" value="Piaggio E City Fx">
+                            <label for="brand-piaggio-ecity">Piaggio E City Fx</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-bajaj" name="brand" value="Bajaj RE E TEC 9.0">
+                            <label for="brand-bajaj">Bajaj RE E TEC 9.0</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="brand-mahindra-treo" name="brand" value="Mahindra Treo Plus">
+                            <label for="brand-mahindra-treo">Mahindra Treo Plus</label>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="catalogue-content">
+
+                <!-- Results Header -->
+                <div class="results-header">
+                    <div class="results-count">
+                        <h2 id="results-count">24 Used 3W EVs Available</h2>
+                    </div>
+                    <div class="sort-options">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="relevance">Relevance</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="year-new">Year: Newest First</option>
+                            <option value="year-old">Year: Oldest First</option>
+                            <option value="km-low">Kilometers: Low to High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Cars Grid -->
+                <div class="cars-grid" id="carsGrid">
+                    <!-- Car widgets will be dynamically generated here -->
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-container">
+                    <button class="load-more-btn" id="loadMoreBtn">Load More Cars</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer placeholder - will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <script src="load-components.js"></script>
+    <script src="script.js"></script>
+    <script src="catalogue.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+/* FORCE WIDGET STYLES - ULTIMATE OVERRIDE - CACHE BUST 2024-12-25 03:30 */
+.car-overview-widget,
+.car-specs-widget {
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    margin: 24px auto !important;
+    max-width: 1200px !important;
+    border: 1px solid #e5e7eb !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.widget-header {
+    background: white !important;
+    padding: 16px 20px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.widget-header h3 {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    margin: 0 !important;
+    text-transform: lowercase !important;
+}
+
+.widget-header i {
+    color: #9ca3af !important;
+    font-size: 12px !important;
+}
+
+.overview-content,
+.specs-content {
+    padding: 0 !important;
+    background: white !important;
+    width: 100% !important;
+}
+
+.overview-row,
+.specs-row {
+    display: flex !important;
+    border-bottom: 1px solid #f3f4f6 !important;
+    width: 100% !important;
+}
+
+.overview-row:last-child,
+.specs-row:last-child {
+    border-bottom: none !important;
+}
+
+.overview-item,
+.spec-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 16px 20px !important;
+    background: white !important;
+    flex: 1 !important;
+    border-right: 1px solid #f3f4f6 !important;
+    width: 100% !important;
+}
+
+.overview-item:last-child,
+.spec-item:last-child {
+    border-right: none !important;
+}
+
+.overview-item i,
+.spec-item i {
+    color: #374151 !important;
+    font-size: 14px !important;
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    width: 16px !important;
+    text-align: center !important;
+}
+
+.overview-label,
+.spec-label {
+    font-size: 13px !important;
+    color: #9ca3af !important;
+    font-weight: 400 !important;
+    min-width: auto !important;
+    margin-right: 8px !important;
+}
+
+.overview-value,
+.spec-value {
+    font-size: 13px !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
+    margin-left: auto !important;
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+}
+

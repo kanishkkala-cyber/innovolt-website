@@ -1,0 +1,27 @@
+{
+  "name": "innovolt-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Innovolt - Second Hand 3W EVs",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "init-db": "node scripts/initDatabase.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["innovolt", "ev", "backend", "api"],
+  "author": "Innovolt Team",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "multer": "^2.0.2",
+    "nodemailer": "^7.0.9",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

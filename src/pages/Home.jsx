@@ -16,8 +16,8 @@ const Home = () => {
     const fetchFeaturedCars = async () => {
       try {
         setLoading(true);
-        const response = await apiService.getCars();
-        setFeaturedCars(response.data.slice(0, 12)); // Get first 12 cars
+        const cars = await apiService.getCars();
+        setFeaturedCars(cars.slice(0, 12)); // Get first 12 cars
       } catch (err) {
         console.error('Error fetching featured cars:', err);
         // Fallback to empty array if API fails

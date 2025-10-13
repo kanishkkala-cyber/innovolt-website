@@ -1,11 +1,11 @@
 import React from 'react';
 import { useGlobal } from '../contexts/GlobalContext';
-import { carData } from '../data/carData';
 
 const ComparisonResultsPopup = ({ open, onClose }) => {
   const { comparedCars } = useGlobal();
-
-  const selectedCars = carData.filter((car) => comparedCars.includes(car.id));
+  
+  // Placeholder for compared cars data
+  const selectedCars = []; // Will be implemented when we have more data
 
   const parameters = [
     { key: 'price', label: 'Price' },

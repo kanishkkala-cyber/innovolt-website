@@ -1,11 +1,11 @@
 import React from 'react';
 import { useGlobal } from '../contexts/GlobalContext';
-import { carData } from '../data/carData';
 
 const ComparePopup = ({ open, onClose, onCompare }) => {
   const { comparedCars, removeFromCompare } = useGlobal();
 
-  const selectedCars = carData.filter((car) => comparedCars.includes(car.id));
+  // Placeholder for compared cars data
+  const selectedCars = []; // Will be implemented when we have more data
 
   return (
     <>

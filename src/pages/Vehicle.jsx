@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getCarById, carData } from '../data/carData';
 import apiService from '../services/api';
 
 const Vehicle = () => {
@@ -13,15 +12,24 @@ const Vehicle = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    email: '',
+    city: '',
     message: '',
     terms: false
   });
 
   useEffect(() => {
-    const car = getCarById(id);
-    if (car) {
-      setVehicle(car);
+    const fetchVehicle = async () => {
+      try {
+        const car = await apiService.getCar(id);
+        setVehicle(car);
+      } catch (error) {
+        console.error('Error fetching vehicle:', error);
+        setVehicle(null);
+      }
+    };
+    
+    if (id) {
+      fetchVehicle();
     }
   }, [id]);
 
@@ -49,10 +57,10 @@ const Vehicle = () => {
 
     try {
       const leadData = {
-        carId: parseInt(id),
+        vehicleRegNo: id, // Use registration number as vehicle reference
         name: formData.name,
-        email: formData.email,
         phone: formData.phone,
+        city: formData.city,
         message: formData.message
       };
 
@@ -61,7 +69,7 @@ const Vehicle = () => {
       
       // Reset form and close after 3 seconds
       setTimeout(() => {
-        setFormData({ name: '', phone: '', email: '', message: '', terms: false });
+        setFormData({ name: '', phone: '', city: '', message: '', terms: false });
         setSubmitStatus(null);
         setShowLeadPopup(false);
       }, 3000);
@@ -100,10 +108,8 @@ const Vehicle = () => {
     );
   }
 
-  // Similar cars (from same location or brand)
-  const similarCars = carData.filter(
-    (car) => car.id !== vehicle.id && (car.location === vehicle.location || car.brand === vehicle.brand)
-  ).slice(0, 8);
+  // Similar cars (placeholder for now)
+  const similarCars = []; // Will be implemented when we have more data
 
   return (
     <main className="vehicle-main">
@@ -345,12 +351,12 @@ const Vehicle = () => {
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="leadEmail">Email Address*</label>
+                  <label htmlFor="leadCity">City*</label>
                   <input
-                    type="email"
-                    id="leadEmail"
-                    name="email"
-                    value={formData.email}
+                    type="text"
+                    id="leadCity"
+                    name="city"
+                    value={formData.city}
                     onChange={handleChange}
                     required
                   />

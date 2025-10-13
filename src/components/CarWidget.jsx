@@ -10,6 +10,15 @@ const CarWidget = ({ car }) => {
     navigate(`/vehicle/${car.id}`);
   };
 
+  // Helper function to format price with ₹ symbol
+  const formatPrice = (price) => {
+    if (!price) return '';
+    // If price already has ₹ symbol, return as is
+    if (price.includes('₹')) return price;
+    // Add ₹ symbol at the beginning
+    return `₹${price}`;
+  };
+
   return (
     <div className="car-widget" onClick={handleCarClick} style={{ cursor: 'pointer' }}>
       <div className="car-image-container">
@@ -45,19 +54,18 @@ const CarWidget = ({ car }) => {
         <h3 className="car-title">{car.title}</h3>
         <div className="car-specs">
           <span className="spec-tag">{car.kilometers}</span>
-          <span className="spec-tag">{car.owners}</span>
         </div>
         <div className="car-pricing">
           <div className="emi-info">
             <span className="emi-text">EMI {car.emi}/m*</span>
           </div>
           <div className="price-info">
-            <span className="current-price">{car.price}</span>
+            <span className="current-price">{formatPrice(car.price)}</span>
           </div>
         </div>
         <div className="car-location">
           <i className="fas fa-map-marker-alt"></i>
-          <span>Innovolt Hub, {car.location}</span>
+          <span>{car.location}</span>
         </div>
       </div>
     </div>

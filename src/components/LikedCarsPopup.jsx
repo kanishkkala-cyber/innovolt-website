@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobal } from '../contexts/GlobalContext';
-import { carData } from '../data/carData';
 
 const LikedCarsPopup = ({ open, onClose }) => {
   const { likedCars, removeFromLiked } = useGlobal();
   const navigate = useNavigate();
 
-  const likedCarsData = carData.filter((car) => likedCars.includes(car.id));
+  // Placeholder for liked cars data
+  const likedCarsData = []; // Will be implemented when we have more data
 
   const handleCarClick = (carId) => {
     navigate(`/vehicle/${carId}`);

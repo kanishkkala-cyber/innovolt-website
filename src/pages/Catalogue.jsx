@@ -1,18 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import CarWidget from '../components/CarWidget';
+import CustomDropdown from '../components/CustomDropdown';
+import RangeSlider from '../components/RangeSlider';
 import apiService from '../services/api';
 
 const Catalogue = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
-  const [displayedCars, setDisplayedCars] = useState(6);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Fixed at 12 items per page
+  
+  // Filter states
   const [selectedLocation, setSelectedLocation] = useState('all');
-  const [selectedBrands, setSelectedBrands] = useState(['all']);
+  const [selectedModels, setSelectedModels] = useState(['all']);
+  const [budgetRange, setBudgetRange] = useState({ min: 0, max: 1000000 });
+  const [yearRange, setYearRange] = useState({ min: 2020, max: 2024 });
+  
   const [sortBy, setSortBy] = useState('relevance');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Sort options for the dropdown
+  const sortOptions = [
+    { value: 'relevance', label: 'Relevance' },
+    { value: 'price-low', label: 'Price: Low to High' },
+    { value: 'price-high', label: 'Price: High to Low' },
+    { value: 'year-new', label: 'Year: Newest First' },
+    { value: 'year-old', label: 'Year: Oldest First' },
+    { value: 'km-low', label: 'Kilometers: Low to High' }
+  ];
+
+  // Dynamic filter options (will be populated from data)
+  const [availableLocations, setAvailableLocations] = useState([]);
+  const [availableModels, setAvailableModels] = useState([]);
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
+  const [yearRangeData, setYearRangeData] = useState({ min: 2020, max: 2024 });
 
   // Initialize filters from URL parameters
   useEffect(() => {
@@ -27,14 +51,40 @@ const Catalogue = () => {
     }
   }, [searchParams]);
 
-  // Fetch cars from backend
+  // Fetch cars from backend and populate filter options
   useEffect(() => {
     const fetchCars = async () => {
       try {
         setLoading(true);
-        const response = await apiService.getCars();
-        setCars(response.data);
-        setFilteredCars(response.data);
+        const carsData = await apiService.getCars();
+        setCars(carsData);
+        setFilteredCars(carsData);
+        
+        // Extract unique locations
+        const locations = [...new Set(carsData.map(car => car.location.split(',')[0]))].sort();
+        setAvailableLocations(locations);
+        
+        // Extract unique models
+        const models = [...new Set(carsData.map(car => car.brand))].sort();
+        setAvailableModels(models);
+        
+        // Extract price range
+        const prices = carsData.map(car => {
+          const priceStr = car.price.replace(/[₹,]/g, '');
+          return parseInt(priceStr) || 0;
+        });
+        const minPrice = Math.min(...prices);
+        const maxPrice = Math.max(...prices);
+        setPriceRange({ min: minPrice, max: maxPrice });
+        setBudgetRange({ min: minPrice, max: maxPrice });
+        
+        // Extract year range
+        const years = carsData.map(car => parseInt(car.year)).filter(year => !isNaN(year));
+        const minYear = Math.min(...years);
+        const maxYear = Math.max(...years);
+        setYearRangeData({ min: minYear, max: maxYear });
+        setYearRange({ min: minYear, max: maxYear });
+        
       } catch (err) {
         setError('Failed to load cars. Please try again.');
         console.error('Error fetching cars:', err);
@@ -52,13 +102,25 @@ const Catalogue = () => {
 
     // Location filter
     if (selectedLocation !== 'all') {
-      filtered = filtered.filter((car) => car.location === selectedLocation);
+      filtered = filtered.filter((car) => car.location.includes(selectedLocation));
     }
 
-    // Brand filter
-    if (!selectedBrands.includes('all')) {
-      filtered = filtered.filter((car) => selectedBrands.includes(car.brand));
+    // Model filter
+    if (!selectedModels.includes('all')) {
+      filtered = filtered.filter((car) => selectedModels.includes(car.brand));
     }
+
+    // Budget filter
+    filtered = filtered.filter((car) => {
+      const price = parseInt(car.price.replace(/[₹,]/g, '')) || 0;
+      return price >= budgetRange.min && price <= budgetRange.max;
+    });
+
+    // Year filter
+    filtered = filtered.filter((car) => {
+      const year = parseInt(car.year) || 0;
+      return year >= yearRange.min && year <= yearRange.max;
+    });
 
     // Sort
     switch (sortBy) {
@@ -88,53 +150,60 @@ const Catalogue = () => {
     }
 
     setFilteredCars(filtered);
-    setDisplayedCars(6); // Reset displayed cars when filters change
-  }, [cars, selectedLocation, selectedBrands, sortBy]);
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [cars, selectedLocation, selectedModels, budgetRange, yearRange, sortBy]);
 
-  const handleBrandChange = (brand) => {
-    if (brand === 'all') {
-      setSelectedBrands(['all']);
-      setSearchParams(prev => {
-        prev.delete('brand');
-        return prev;
-      });
+  const handleModelChange = (model) => {
+    if (model === 'all') {
+      setSelectedModels(['all']);
     } else {
-      setSelectedBrands((prev) => {
-        const newBrands = prev.filter((b) => b !== 'all');
-        if (newBrands.includes(brand)) {
-          const updated = newBrands.filter((b) => b !== brand);
+      setSelectedModels((prev) => {
+        const newModels = prev.filter((m) => m !== 'all');
+        if (newModels.includes(model)) {
+          const updated = newModels.filter((m) => m !== model);
           return updated.length === 0 ? ['all'] : updated;
         } else {
-          return [...newBrands, brand];
+          return [...newModels, model];
         }
-      });
-      setSearchParams(prev => {
-        prev.set('brand', brand);
-        return prev;
       });
     }
   };
 
   const handleLocationChange = (location) => {
     setSelectedLocation(location);
-    setSearchParams(prev => {
-      if (location === 'all') {
-        prev.delete('location');
-      } else {
-        prev.set('location', location);
-      }
-      return prev;
-    });
   };
 
   const handleClearFilters = () => {
     setSelectedLocation('all');
-    setSelectedBrands(['all']);
-    setSearchParams({});
+    setSelectedModels(['all']);
+    setBudgetRange({ min: priceRange.min, max: priceRange.max });
+    setYearRange({ min: yearRangeData.min, max: yearRangeData.max });
+    setCurrentPage(1);
   };
 
-  const handleLoadMore = () => {
-    setDisplayedCars((prev) => prev + 6);
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredCars.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCars = filteredCars.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -201,18 +270,12 @@ const Catalogue = () => {
             </div>
             <div className="sort-options">
               <label htmlFor="sort-select">Sort by:</label>
-              <select 
-                id="sort-select" 
-                value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="relevance">Relevance</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="year-new">Year: Newest First</option>
-                <option value="year-old">Year: Oldest First</option>
-                <option value="km-low">Kilometers: Low to High</option>
-              </select>
+              <CustomDropdown
+                options={sortOptions}
+                value={sortBy}
+                onChange={setSortBy}
+                placeholder="Select sorting option"
+              />
             </div>
           </div>
 
@@ -241,18 +304,62 @@ const Catalogue = () => {
                 </button>
               </div>
             ) : (
-              filteredCars.slice(0, displayedCars).map((car) => (
+              currentCars.map((car) => (
                 <CarWidget key={car.id} car={car} />
               ))
             )}
           </div>
 
-          {/* Load More Button */}
-          {displayedCars < filteredCars.length && (
-            <div className="load-more-container">
-              <button className="load-more-btn" onClick={handleLoadMore}>
-                Load More Cars
-              </button>
+          {/* Pagination Controls */}
+          {filteredCars.length > 0 && (
+            <div className="pagination-container">
+              {/* Pagination controls */}
+              <div className="pagination-controls">
+                <button 
+                  className="pagination-btn prev-btn" 
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                  Previous
+                </button>
+
+                <div className="page-numbers">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                    // Show first page, last page, current page, and pages around current page
+                    if (
+                      page === 1 || 
+                      page === totalPages || 
+                      (page >= currentPage - 1 && page <= currentPage + 1)
+                    ) {
+                      return (
+                        <button
+                          key={page}
+                          className={`page-number ${currentPage === page ? 'active' : ''}`}
+                          onClick={() => handlePageChange(page)}
+                        >
+                          {page}
+                        </button>
+                      );
+                    } else if (
+                      page === currentPage - 2 || 
+                      page === currentPage + 2
+                    ) {
+                      return <span key={page} className="page-ellipsis">...</span>;
+                    }
+                    return null;
+                  })}
+                </div>
+
+                <button 
+                  className="pagination-btn next-btn" 
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <i className="fas fa-chevron-right"></i>
+                </button>
+              </div>
             </div>
           )}
         </div>

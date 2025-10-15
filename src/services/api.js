@@ -102,11 +102,11 @@ const apiService = {
             year: '2022',
             registrationYear: '2022',
             vehicleNumber: 'SAMPLE001',
-            spareKey: 'Yes',
-            spareWheel: 'Yes',
-            chargerAvailable: 'Yes',
-            batteryCondition: 'Good',
-            toolKitAvailable: 'Yes',
+            modelType: 'E-City',
+            loadCapacity: '300 kg',
+            batteryCapacity: '3.5 kwt',
+            chargingTime: '6 hours',
+            topSpeed: '45 km/h',
             images: ['/placeholder-vehicle.svg']
           },
           {
@@ -121,11 +121,11 @@ const apiService = {
             year: '2023',
             registrationYear: '2023',
             vehicleNumber: 'SAMPLE002',
-            spareKey: 'Yes',
-            spareWheel: 'Yes',
-            chargerAvailable: 'Yes',
-            batteryCondition: 'Good',
-            toolKitAvailable: 'Yes',
+            modelType: 'HiLoad',
+            loadCapacity: '500 kg',
+            batteryCapacity: '4.2 kwt',
+            chargingTime: '8 hours',
+            topSpeed: '55 km/h',
             images: ['/placeholder-vehicle.svg']
           }
         ];
@@ -159,11 +159,6 @@ const apiService = {
           year: new Date(vehicle['Registration date']).getFullYear().toString(),
           registrationYear: new Date(vehicle['Registration date']).getFullYear().toString(),
           vehicleNumber: vehicle.Registration_No,
-          spareKey: 'Yes', // Default values
-          spareWheel: 'Yes',
-          chargerAvailable: 'Yes',
-          batteryCondition: 'Good',
-          toolKitAvailable: 'Yes',
           images: ['/placeholder-vehicle.svg'], // Placeholder image
           // Additional Supabase fields - using exact column names from schema
           model: vehicle.Model,
@@ -212,11 +207,11 @@ const apiService = {
           year: '2022',
           registrationYear: '2022',
           vehicleNumber: 'SAMPLE001',
-          spareKey: 'Yes',
-          spareWheel: 'Yes',
-          chargerAvailable: 'Yes',
-          batteryCondition: 'Good',
-          toolKitAvailable: 'Yes',
+          modelType: 'E-City',
+          loadCapacity: '300 kg',
+          batteryCapacity: '3.5 kwt',
+          chargingTime: '6 hours',
+          topSpeed: '45 km/h',
           images: ['/placeholder-vehicle.svg']
         }
       ];
@@ -247,11 +242,11 @@ const apiService = {
           year: '2022',
           registrationYear: '2022',
           vehicleNumber: 'SAMPLE001',
-          spareKey: 'Yes',
-          spareWheel: 'Yes',
-          chargerAvailable: 'Yes',
-          batteryCondition: 'Good',
-          toolKitAvailable: 'Yes',
+          modelType: 'E-City',
+          loadCapacity: '300 kg',
+          batteryCapacity: '3.5 kwt',
+          chargingTime: '6 hours',
+          topSpeed: '45 km/h',
           images: ['/placeholder-vehicle.svg']
         };
       }
@@ -270,11 +265,6 @@ const apiService = {
         year: new Date(vehicle['Registration date']).getFullYear().toString(),
         registrationYear: new Date(vehicle['Registration date']).getFullYear().toString(),
         vehicleNumber: vehicle.Registration_No,
-        spareKey: 'Yes',
-        spareWheel: 'Yes',
-        chargerAvailable: 'Yes',
-        batteryCondition: 'Good',
-        toolKitAvailable: 'Yes',
         images: ['/placeholder-vehicle.svg'],
         // Additional Supabase fields - using exact column names from schema
         model: vehicle.Model,
@@ -313,11 +303,11 @@ const apiService = {
         year: '2022',
         registrationYear: '2022',
         vehicleNumber: 'SAMPLE001',
-        spareKey: 'Yes',
-        spareWheel: 'Yes',
-        chargerAvailable: 'Yes',
-        batteryCondition: 'Good',
-        toolKitAvailable: 'Yes',
+        modelType: 'E-City',
+        loadCapacity: '300 kg',
+        batteryCapacity: '3.5 kwt',
+        chargingTime: '6 hours',
+        topSpeed: '45 km/h',
         images: ['/placeholder-vehicle.svg']
       };
     }

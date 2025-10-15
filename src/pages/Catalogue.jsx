@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import CarWidget from '../components/CarWidget';
+import LocationSearch from '../components/LocationSearch';
 import CustomDropdown from '../components/CustomDropdown';
 import RangeSlider from '../components/RangeSlider';
 import apiService from '../services/api';
@@ -13,13 +14,14 @@ const Catalogue = () => {
   const itemsPerPage = 12; // Fixed at 12 items per page
   
   // Filter states
-  const [selectedLocation, setSelectedLocation] = useState('all');
+  const [selectedLocation, setSelectedLocation] = useState([]);
   const [selectedModels, setSelectedModels] = useState(['all']);
-  const [budgetRange, setBudgetRange] = useState({ min: 0, max: 1000000 });
-  const [yearRange, setYearRange] = useState({ min: 2020, max: 2024 });
+  const [budgetRange, setBudgetRange] = useState({ min: 100000, max: 350000 });
+  const [yearRange, setYearRange] = useState({ min: 2022, max: 2024 });
   
   const [sortBy, setSortBy] = useState('relevance');
   const [loading, setLoading] = useState(true);
+  const [filterLoading, setFilterLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Sort options for the dropdown
@@ -35,19 +37,29 @@ const Catalogue = () => {
   // Dynamic filter options (will be populated from data)
   const [availableLocations, setAvailableLocations] = useState([]);
   const [availableModels, setAvailableModels] = useState([]);
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
-  const [yearRangeData, setYearRangeData] = useState({ min: 2020, max: 2024 });
+  const [priceRange, setPriceRange] = useState({ min: 100000, max: 350000 });
+  const [yearRangeData, setYearRangeData] = useState({ min: 2022, max: 2024 });
 
   // Initialize filters from URL parameters
   useEffect(() => {
     const location = searchParams.get('location');
-    const brand = searchParams.get('brand');
+    const model = searchParams.get('model');
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
     
     if (location) {
-      setSelectedLocation(location);
+      setSelectedLocation([location]); // Convert single location to array
     }
-    if (brand) {
-      setSelectedBrands([brand]);
+    
+    if (model) {
+      setSelectedModels([model]);
+    }
+    
+    if (minPrice && maxPrice) {
+      setBudgetRange({ 
+        min: parseInt(minPrice), 
+        max: parseInt(maxPrice) 
+      });
     }
   }, [searchParams]);
 
@@ -68,22 +80,13 @@ const Catalogue = () => {
         const models = [...new Set(carsData.map(car => car.brand))].sort();
         setAvailableModels(models);
         
-        // Extract price range
-        const prices = carsData.map(car => {
-          const priceStr = car.price.replace(/[₹,]/g, '');
-          return parseInt(priceStr) || 0;
-        });
-        const minPrice = Math.min(...prices);
-        const maxPrice = Math.max(...prices);
-        setPriceRange({ min: minPrice, max: maxPrice });
-        setBudgetRange({ min: minPrice, max: maxPrice });
+        // Set fixed price range (1L to 3.5L)
+        setPriceRange({ min: 100000, max: 350000 });
+        setBudgetRange({ min: 100000, max: 350000 });
         
-        // Extract year range
-        const years = carsData.map(car => parseInt(car.year)).filter(year => !isNaN(year));
-        const minYear = Math.min(...years);
-        const maxYear = Math.max(...years);
-        setYearRangeData({ min: minYear, max: maxYear });
-        setYearRange({ min: minYear, max: maxYear });
+        // Set fixed year range (2022 onwards)
+        setYearRangeData({ min: 2022, max: 2024 });
+        setYearRange({ min: 2022, max: 2024 });
         
       } catch (err) {
         setError('Failed to load cars. Please try again.');
@@ -98,59 +101,70 @@ const Catalogue = () => {
 
   // Apply filters
   useEffect(() => {
-    let filtered = [...cars];
+    // Show loading spinner when filters are being applied
+    setFilterLoading(true);
+    
+    // Simulate a small delay for better UX (optional)
+    const timeoutId = setTimeout(() => {
+      let filtered = [...cars];
 
-    // Location filter
-    if (selectedLocation !== 'all') {
-      filtered = filtered.filter((car) => car.location.includes(selectedLocation));
-    }
-
-    // Model filter
-    if (!selectedModels.includes('all')) {
-      filtered = filtered.filter((car) => selectedModels.includes(car.brand));
-    }
-
-    // Budget filter
-    filtered = filtered.filter((car) => {
-      const price = parseInt(car.price.replace(/[₹,]/g, '')) || 0;
-      return price >= budgetRange.min && price <= budgetRange.max;
-    });
-
-    // Year filter
-    filtered = filtered.filter((car) => {
-      const year = parseInt(car.year) || 0;
-      return year >= yearRange.min && year <= yearRange.max;
-    });
-
-    // Sort
-    switch (sortBy) {
-      case 'price-low':
-        filtered.sort((a, b) => 
-          parseInt(a.price.replace(/[₹,]/g, '')) - parseInt(b.price.replace(/[₹,]/g, ''))
+      // Location filter
+      if (selectedLocation.length > 0) {
+        filtered = filtered.filter((car) => 
+          selectedLocation.some(loc => car.location.includes(loc))
         );
-        break;
-      case 'price-high':
-        filtered.sort((a, b) => 
-          parseInt(b.price.replace(/[₹,]/g, '')) - parseInt(a.price.replace(/[₹,]/g, ''))
-        );
-        break;
-      case 'year-new':
-        filtered.sort((a, b) => parseInt(b.year) - parseInt(a.year));
-        break;
-      case 'year-old':
-        filtered.sort((a, b) => parseInt(a.year) - parseInt(b.year));
-        break;
-      case 'km-low':
-        filtered.sort((a, b) => 
-          parseInt(a.kilometers.replace(/[km,]/g, '')) - parseInt(b.kilometers.replace(/[km,]/g, ''))
-        );
-        break;
-      default:
-        break;
-    }
+      }
 
-    setFilteredCars(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
+      // Model filter
+      if (!selectedModels.includes('all')) {
+        filtered = filtered.filter((car) => selectedModels.includes(car.brand));
+      }
+
+      // Budget filter
+      filtered = filtered.filter((car) => {
+        const price = parseInt(car.price.replace(/[₹,]/g, '')) || 0;
+        return price >= budgetRange.min && price <= budgetRange.max;
+      });
+
+      // Year filter
+      filtered = filtered.filter((car) => {
+        const year = parseInt(car.year) || 0;
+        return year >= yearRange.min && year <= yearRange.max;
+      });
+
+      // Sort
+      switch (sortBy) {
+        case 'price-low':
+          filtered.sort((a, b) => 
+            parseInt(a.price.replace(/[₹,]/g, '')) - parseInt(b.price.replace(/[₹,]/g, ''))
+          );
+          break;
+        case 'price-high':
+          filtered.sort((a, b) => 
+            parseInt(b.price.replace(/[₹,]/g, '')) - parseInt(a.price.replace(/[₹,]/g, ''))
+          );
+          break;
+        case 'year-new':
+          filtered.sort((a, b) => parseInt(b.year) - parseInt(a.year));
+          break;
+        case 'year-old':
+          filtered.sort((a, b) => parseInt(a.year) - parseInt(b.year));
+          break;
+        case 'km-low':
+          filtered.sort((a, b) => 
+            parseInt(a.kilometers.replace(/[km,]/g, '')) - parseInt(b.kilometers.replace(/[km,]/g, ''))
+          );
+          break;
+        default:
+          break;
+      }
+
+      setFilteredCars(filtered);
+      setCurrentPage(1); // Reset to first page when filters change
+      setFilterLoading(false); // Hide loading spinner
+    }, 300); // 300ms delay for smooth UX
+
+    return () => clearTimeout(timeoutId);
   }, [cars, selectedLocation, selectedModels, budgetRange, yearRange, sortBy]);
 
   const handleModelChange = (model) => {
@@ -174,10 +188,10 @@ const Catalogue = () => {
   };
 
   const handleClearFilters = () => {
-    setSelectedLocation('all');
+    setSelectedLocation([]);
     setSelectedModels(['all']);
-    setBudgetRange({ min: priceRange.min, max: priceRange.max });
-    setYearRange({ min: yearRangeData.min, max: yearRangeData.max });
+    setBudgetRange({ min: 100000, max: 350000 });
+    setYearRange({ min: 2022, max: 2024 });
     setCurrentPage(1);
   };
 
@@ -218,66 +232,90 @@ const Catalogue = () => {
             </button>
           </div>
 
+          {/* Budget Filter */}
+          <div className="filter-section">
+            <RangeSlider
+              min={priceRange.min}
+              max={priceRange.max}
+              value={budgetRange}
+              onChange={setBudgetRange}
+              label="Budget"
+              formatValue={(value) => `₹${(value / 100000).toFixed(1)}L`}
+              step={10000}
+            />
+          </div>
+
           {/* Location Filter */}
           <div className="filter-section">
             <h4 className="filter-title">Location</h4>
+            <LocationSearch
+              availableLocations={availableLocations}
+              selectedLocations={selectedLocation}
+              onLocationChange={handleLocationChange}
+              placeholder="Search for cities..."
+            />
+          </div>
+
+          {/* Model Filter */}
+          <div className="filter-section">
+            <h4 className="filter-title">Model</h4>
             <div className="filter-options">
-              {['all', 'Bangalore', 'Delhi', 'Hyderabad', 'Pune', 'Lucknow', 'Kanpur', 'Chennai'].map((loc) => (
-                <div key={loc} className="filter-option">
+              <div className="filter-option">
+                <input
+                  type="checkbox"
+                  id="model-all"
+                  checked={selectedModels.includes('all')}
+                  onChange={() => handleModelChange('all')}
+                />
+                <label htmlFor="model-all">All Models</label>
+              </div>
+              {availableModels.map((model) => (
+                <div key={model} className="filter-option">
                   <input
-                    type="radio"
-                    id={`location-${loc}`}
-                    name="location"
-                    value={loc}
-                    checked={selectedLocation === loc}
-                    onChange={() => handleLocationChange(loc)}
+                    type="checkbox"
+                    id={`model-${model}`}
+                    checked={selectedModels.includes(model)}
+                    onChange={() => handleModelChange(model)}
                   />
-                  <label htmlFor={`location-${loc}`}>
-                    {loc === 'all' ? 'All Locations' : loc}
-                  </label>
+                  <label htmlFor={`model-${model}`}>{model}</label>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Brand Filter */}
+          {/* Registration Year Filter */}
           <div className="filter-section">
-            <h4 className="filter-title">Brand</h4>
-            <div className="filter-options">
-              {['all', 'Piaggio E City Fx', 'Mahindra Treo Plus', 'Etrio', 'Euler', 'Montra Super Auto', 'Bajaj RE E TEC 9.0'].map((brand) => (
-                <div key={brand} className="filter-option">
-                  <input
-                    type="checkbox"
-                    id={`brand-${brand}`}
-                    checked={selectedBrands.includes(brand)}
-                    onChange={() => handleBrandChange(brand)}
-                  />
-                  <label htmlFor={`brand-${brand}`}>
-                    {brand === 'all' ? 'All Brands' : brand}
-                  </label>
-                </div>
-              ))}
-            </div>
+            <RangeSlider
+              min={yearRangeData.min}
+              max={yearRangeData.max}
+              value={yearRange}
+              onChange={setYearRange}
+              label="Registration Year"
+              formatValue={(value) => value.toString()}
+              step={1}
+            />
           </div>
         </aside>
 
         {/* Main Content Area */}
         <div className="catalogue-content">
           {/* Results Header */}
-          <div className="results-header">
-            <div className="results-count">
-              <h2>{filteredCars.length} Used 3W EVs Available</h2>
+          {!filterLoading && (
+            <div className="results-header">
+              <div className="results-count">
+                <h2>{filteredCars.length} Used 3W EVs Available</h2>
+              </div>
+              <div className="sort-options">
+                <label htmlFor="sort-select">Sort by:</label>
+                <CustomDropdown
+                  options={sortOptions}
+                  value={sortBy}
+                  onChange={setSortBy}
+                  placeholder="Select sorting option"
+                />
+              </div>
             </div>
-            <div className="sort-options">
-              <label htmlFor="sort-select">Sort by:</label>
-              <CustomDropdown
-                options={sortOptions}
-                value={sortBy}
-                onChange={setSortBy}
-                placeholder="Select sorting option"
-              />
-            </div>
-          </div>
+          )}
 
           {/* Cars Grid */}
           <div className="cars-grid">
@@ -285,6 +323,11 @@ const Catalogue = () => {
               <div className="loading-container">
                 <div className="loading-spinner"></div>
                 <p>Loading cars...</p>
+              </div>
+            ) : filterLoading ? (
+              <div className="loading-container">
+                <div className="loading-spinner"></div>
+                <p>Applying filters...</p>
               </div>
             ) : error ? (
               <div className="error-container">
@@ -311,7 +354,7 @@ const Catalogue = () => {
           </div>
 
           {/* Pagination Controls */}
-          {filteredCars.length > 0 && (
+          {filteredCars.length > 0 && !filterLoading && (
             <div className="pagination-container">
               {/* Pagination controls */}
               <div className="pagination-controls">

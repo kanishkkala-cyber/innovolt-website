@@ -93,10 +93,6 @@ const Contact = () => {
                 Industrial Plot Bearing No 7-A1, 3rd Cross Rd, Devasandra Industrial Estate,
                 Krishnarajapura, Near VR Mall, Bengaluru, Karnataka - 560048
               </p>
-              <p className="company-details">
-                Corporate Identity Number: U74999KA2015PTC077123<br />
-                Registration Number: 077123
-              </p>
               <button
                 className="directions-btn"
                 onClick={() =>

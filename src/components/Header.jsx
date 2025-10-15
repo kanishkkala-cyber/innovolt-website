@@ -7,6 +7,7 @@ import CallPopup from './CallPopup';
 import ComparePopup from './ComparePopup';
 import LikedCarsPopup from './LikedCarsPopup';
 import ComparisonResultsPopup from './ComparisonResultsPopup';
+import DynamicSearch from './DynamicSearch';
 
 const Header = () => {
   const { likedCars, comparedCars, selectedCity } = useGlobal();
@@ -17,6 +18,7 @@ const Header = () => {
   const [likedPopupOpen, setLikedPopupOpen] = useState(false);
   const [comparisonResultsOpen, setComparisonResultsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
   const [rotatingWord, setRotatingWord] = useState('model');
 
   const words = ['location', 'price', 'model', 'company'];
@@ -60,10 +62,21 @@ const Header = () => {
                   className="search-input" 
                   id="searchInput"
                   value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  onFocus={(e) => e.target.nextSibling.style.opacity = '0'}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSearchText(value);
+                    setSearchDropdownOpen(value.trim() !== '');
+                  }}
+                  onFocus={(e) => {
+                    e.target.nextSibling.style.opacity = '0';
+                    if (e.target.value.trim() !== '') {
+                      setSearchDropdownOpen(true);
+                    }
+                  }}
                   onBlur={(e) => {
                     if (!searchText) e.target.nextSibling.style.opacity = '1';
+                    // Delay closing to allow clicking on suggestions
+                    setTimeout(() => setSearchDropdownOpen(false), 200);
                   }}
                 />
                 <div className="search-placeholder" id="searchPlaceholder">
@@ -71,6 +84,15 @@ const Header = () => {
                   <span className="rotating-text" id="rotatingText">{rotatingWord}</span>
                 </div>
               </div>
+              {searchDropdownOpen && (
+                <>
+                  <DynamicSearch 
+                    searchText={searchText}
+                    setSearchText={setSearchText}
+                    onClose={() => setSearchDropdownOpen(false)}
+                  />
+                </>
+              )}
             </div>
           </div>
 

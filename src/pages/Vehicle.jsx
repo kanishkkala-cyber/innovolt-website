@@ -161,21 +161,17 @@ const Vehicle = () => {
               <div className="vehicle-features">
                 <div className="feature-item">
                   <i className="fas fa-map-marker-alt"></i>
-                  <span>Innovolt Hub, {vehicle.location}</span>
+                  <span>{vehicle.location}</span>
                 </div>
-              </div>
-              <div className="shortlisted-count">
-                <i className="fas fa-heart"></i>
-                <span>16 people shortlisted</span>
               </div>
             </div>
 
             {/* Pricing Section */}
             <div className="pricing-section">
               <div className="price-label">On road price</div>
-              <div className="price-main">{vehicle.price}</div>
+              <div className="price-main">₹{vehicle.price}</div>
               <div className="emi-label">EMI option</div>
-              <div className="emi-current">EMI {vehicle.emi}/m</div>
+              <div className="emi-current">EMI ₹{vehicle.emi}/m</div>
             </div>
 
             {/* Action Buttons */}
@@ -192,10 +188,10 @@ const Vehicle = () => {
         </div>
       </div>
 
-      {/* Car Overview Widget */}
+      {/* Vehicle Overview Widget */}
       <div className="car-overview-widget">
         <div className="widget-header">
-          <h3>Car Overview</h3>
+          <h3>Vehicle Overview</h3>
         </div>
         <div className="overview-content">
           <div className="overview-row">
@@ -212,53 +208,56 @@ const Vehicle = () => {
           </div>
           <div className="overview-row">
             <div className="overview-item">
-              <i className="fas fa-building"></i>
-              <span className="overview-label">Reg number</span>
-              <span className="overview-value">{vehicle.vehicleNumber}</span>
-            </div>
-            <div className="overview-item">
               <i className="fas fa-map-marker-alt"></i>
               <span className="overview-label">Location</span>
               <span className="overview-value">{vehicle.location}</span>
+            </div>
+            <div className="overview-item">
+              <i className="fas fa-car"></i>
+              <span className="overview-label">Model Type</span>
+              <span className="overview-value">{vehicle.modelType || 'N/A'}</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Car Specifications Widget */}
+      {/* Vehicle Specifications Widget */}
       <div className="car-specs-widget">
         <div className="widget-header">
-          <h3>Car Specifications</h3>
+          <h3>Vehicle Specifications</h3>
         </div>
         <div className="specs-content">
           <div className="specs-row">
-            <div className="spec-item">
-              <i className="fas fa-key"></i>
-              <span className="spec-label">Spare Key</span>
-              <span className="spec-value">{vehicle.spareKey}</span>
-            </div>
-            <div className="spec-item">
-              <i className="fas fa-circle"></i>
-              <span className="spec-label">Spare Wheel</span>
-              <span className="spec-value">{vehicle.spareWheel}</span>
-            </div>
-            <div className="spec-item">
-              <i className="fas fa-plug"></i>
-              <span className="spec-label">Charger Available</span>
-              <span className="spec-value">{vehicle.chargerAvailable}</span>
-            </div>
+            {vehicle.loadCapacity && (
+              <div className="spec-item">
+                <i className="fas fa-weight-hanging"></i>
+                <span className="spec-label">Load Capacity (kg)</span>
+                <span className="spec-value">{vehicle.loadCapacity}</span>
+              </div>
+            )}
+            {vehicle.batteryCapacity && (
+              <div className="spec-item">
+                <i className="fas fa-battery-full"></i>
+                <span className="spec-label">Battery Capacity (kwt)</span>
+                <span className="spec-value">{vehicle.batteryCapacity}</span>
+              </div>
+            )}
           </div>
           <div className="specs-row">
-            <div className="spec-item">
-              <i className="fas fa-battery-half"></i>
-              <span className="spec-label">Battery Condition</span>
-              <span className="spec-value">{vehicle.batteryCondition}</span>
-            </div>
-            <div className="spec-item">
-              <i className="fas fa-tools"></i>
-              <span className="spec-label">Tool Kit Available</span>
-              <span className="spec-value">{vehicle.toolKitAvailable}</span>
-            </div>
+            {vehicle.chargingTime && (
+              <div className="spec-item">
+                <i className="fas fa-clock"></i>
+                <span className="spec-label">Charging time (hours)</span>
+                <span className="spec-value">{vehicle.chargingTime}</span>
+              </div>
+            )}
+            {vehicle.topSpeed && (
+              <div className="spec-item">
+                <i className="fas fa-tachometer-alt"></i>
+                <span className="spec-label">Top Speed (km/h)</span>
+                <span className="spec-value">{vehicle.topSpeed}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -296,7 +295,7 @@ const Vehicle = () => {
                     </div>
                     <div className="car-location">
                       <i className="fas fa-map-marker-alt"></i>
-                      Innovolt Hub, {car.location}
+                      {car.location}
                     </div>
                   </div>
                 </Link>

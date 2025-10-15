@@ -29,7 +29,29 @@ const Home = () => {
 
     fetchFeaturedCars();
   }, []);
-  const slidesToShow = 4; // Default for desktop
+  const [slidesToShow, setSlidesToShow] = useState(3); // Default for desktop
+  const [slideWidth, setSlideWidth] = useState(320); // Default slide width
+  
+  // Handle responsive slides
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 480) {
+        setSlidesToShow(1); // Show 1 car on mobile
+        setSlideWidth(280); // Mobile slide width
+      } else if (window.innerWidth <= 768) {
+        setSlidesToShow(2); // Show 2 cars on tablet
+        setSlideWidth(300); // Tablet slide width
+      } else {
+        setSlidesToShow(3); // Show 3 cars on desktop
+        setSlideWidth(320); // Desktop slide width
+      }
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const maxSlide = Math.max(0, featuredCars.length - slidesToShow);
 
   const cities = [
@@ -148,7 +170,7 @@ const Home = () => {
             <div className="car-slider-wrapper">
               <div 
                 className="car-slider"
-                style={{ transform: `translateX(-${currentSlide * 320}px)` }}
+                style={{ transform: `translateX(-${currentSlide * slideWidth}px)` }}
               >
                 {featuredCars.map((car) => (
                   <CarWidget key={car.id} car={car} />

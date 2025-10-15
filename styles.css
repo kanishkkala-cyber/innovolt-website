@@ -1182,12 +1182,14 @@ body {
 .car-slider-wrapper {
     overflow: hidden;
     margin: 0 50px;
+    width: calc(100% - 100px);
 }
 
 .car-slider {
     display: flex;
     gap: 20px;
     transition: transform 0.3s ease;
+    width: fit-content;
 }
 
 .slider-nav-btn {
@@ -1236,7 +1238,7 @@ body {
     overflow: hidden;
     transition: all 0.3s ease;
     height: 320px;
-    width: 280px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -3592,6 +3594,15 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         grid-template-columns: repeat(auto-fit, 280px);
         gap: 20px;
     }
+    
+    .car-slider-wrapper {
+        margin: 0 30px;
+        width: calc(100% - 60px);
+    }
+    
+    .car-widget {
+        width: 280px;
+    }
 
     .cities-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -3983,6 +3994,15 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     .car-widgets-grid {
         grid-template-columns: 1fr;
         justify-items: center;
+    }
+    
+    .car-slider-wrapper {
+        margin: 0 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .car-widget {
+        width: 260px;
     }
 
     .cities-grid {

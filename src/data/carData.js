@@ -18,6 +18,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://assets.turnoclub.com/developer/offer-turno-images/S3/revamp/Piaggio_Gallery/piaggio_15.webp",
       "https://assets.turnoclub.com/developer/offer-turno-images/S3/revamp/Piaggio_Gallery/piaggio_15.webp",
@@ -43,6 +46,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Excellent",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://mahindralastmilemobility.com/assets/front/images/treo-zor-cargo/silder/delivery-van/silder1.jpg",
       "https://mahindralastmilemobility.com/assets/front/images/treo-zor-cargo/silder/delivery-van/silder1.jpg",
@@ -66,6 +72,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Excellent",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/3/494615543/PR/SI/NL/220805235/euler-hiload-pv-electric-loader.jpeg",
     ]
@@ -88,6 +97,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/3/494615543/PR/SI/NL/220805235/euler-hiload-pv-electric-loader.jpeg",
     ]
@@ -110,6 +122,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/3/494615543/PR/SI/NL/220805235/euler-hiload-pv-electric-loader.jpeg",
     ]
@@ -132,6 +147,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Excellent",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://assets.turnoclub.com/developer/offer-turno-images/S3/revamp/Piaggio_Gallery/piaggio_15.webp",
     ]
@@ -154,6 +172,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://assets.turnoclub.com/developer/offer-turno-images/S3/revamp/Piaggio_Gallery/piaggio_15.webp",
     ]
@@ -176,6 +197,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://mahindralastmilemobility.com/assets/front/images/treo-zor-cargo/silder/delivery-van/silder1.jpg",
     ]
@@ -198,6 +222,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Excellent",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/3/494615543/PR/SI/NL/220805235/euler-hiload-pv-electric-loader.jpeg",
     ]
@@ -220,6 +247,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/3/494615543/PR/SI/NL/220805235/euler-hiload-pv-electric-loader.jpeg",
     ]
@@ -242,6 +272,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Good",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/3/494615543/PR/SI/NL/220805235/euler-hiload-pv-electric-loader.jpeg",
     ]
@@ -264,6 +297,9 @@ export const carData = [
     chargerAvailable: "Yes",
     batteryCondition: "Excellent",
     toolKitAvailable: "Yes",
+    batteryCapacity: "3.2 kWh",
+    chargingTime: "6 hours",
+    speed: "25 km/h",
     images: [
       "https://assets.turnoclub.com/developer/offer-turno-images/S3/revamp/Piaggio_Gallery/piaggio_15.webp",
     ]

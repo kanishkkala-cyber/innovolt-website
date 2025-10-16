@@ -5,21 +5,20 @@ import SlidingMenu from './SlidingMenu';
 import LocationPopup from './LocationPopup';
 import CallPopup from './CallPopup';
 import ComparePopup from './ComparePopup';
-import LikedCarsPopup from './LikedCarsPopup';
 import ComparisonResultsPopup from './ComparisonResultsPopup';
 import DynamicSearch from './DynamicSearch';
 
 const Header = () => {
-  const { likedCars, comparedCars, selectedCity } = useGlobal();
+  const { comparedCars, selectedCity } = useGlobal();
   const [menuOpen, setMenuOpen] = useState(false);
   const [locationPopupOpen, setLocationPopupOpen] = useState(false);
   const [callPopupOpen, setCallPopupOpen] = useState(false);
   const [comparePopupOpen, setComparePopupOpen] = useState(false);
-  const [likedPopupOpen, setLikedPopupOpen] = useState(false);
   const [comparisonResultsOpen, setComparisonResultsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
   const [rotatingWord, setRotatingWord] = useState('model');
+  const [animateCount, setAnimateCount] = useState(false);
 
   const words = ['location', 'price', 'model', 'company'];
   const [wordIndex, setWordIndex] = useState(0);
@@ -34,6 +33,13 @@ const Header = () => {
   useEffect(() => {
     setRotatingWord(words[wordIndex]);
   }, [wordIndex]);
+
+  // Animate compare count when it changes
+  useEffect(() => {
+    setAnimateCount(true);
+    const timer = setTimeout(() => setAnimateCount(false), 600);
+    return () => clearTimeout(timer);
+  }, [comparedCars.length]);
 
   return (
     <>
@@ -116,16 +122,10 @@ const Header = () => {
 
             {/* Action Icons */}
             <div className="action-icons">
-              {/* Liked Cars Button */}
-              <button className="action-icon-btn liked-btn" onClick={() => setLikedPopupOpen(true)} type="button">
-                <i className="fas fa-heart"></i>
-                <span className="action-count">{likedCars.length}</span>
-              </button>
-
               {/* Compare Cars Button */}
               <button className="action-icon-btn compare-btn" onClick={() => setComparePopupOpen(true)} type="button">
-                <i className="fas fa-balance-scale"></i>
-                <span className="action-count">{comparedCars.length}</span>
+                <span className="compare-text">Compare Now</span>
+                <span className={`action-count ${animateCount ? 'animate' : ''}`}>{comparedCars.length}</span>
               </button>
             </div>
           </div>
@@ -146,10 +146,13 @@ const Header = () => {
           setComparisonResultsOpen(true);
         }}
       />
-      <LikedCarsPopup open={likedPopupOpen} onClose={() => setLikedPopupOpen(false)} />
       <ComparisonResultsPopup 
         open={comparisonResultsOpen} 
-        onClose={() => setComparisonResultsOpen(false)} 
+        onClose={() => setComparisonResultsOpen(false)}
+        onBack={() => {
+          setComparisonResultsOpen(false);
+          setComparePopupOpen(true);
+        }}
       />
     </>
   );

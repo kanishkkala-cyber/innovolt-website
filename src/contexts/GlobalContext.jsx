@@ -11,11 +11,6 @@ export const useGlobal = () => {
 };
 
 export const GlobalProvider = ({ children }) => {
-  const [likedCars, setLikedCars] = useState(() => {
-    const saved = localStorage.getItem('likedCars');
-    return saved ? JSON.parse(saved) : [];
-  });
-
   const [comparedCars, setComparedCars] = useState(() => {
     const saved = localStorage.getItem('comparedCars');
     return saved ? JSON.parse(saved) : [];
@@ -27,10 +22,6 @@ export const GlobalProvider = ({ children }) => {
 
   // Sync with localStorage
   useEffect(() => {
-    localStorage.setItem('likedCars', JSON.stringify(likedCars));
-  }, [likedCars]);
-
-  useEffect(() => {
     localStorage.setItem('comparedCars', JSON.stringify(comparedCars));
   }, [comparedCars]);
 
@@ -38,51 +29,31 @@ export const GlobalProvider = ({ children }) => {
     localStorage.setItem('selectedCity', selectedCity);
   }, [selectedCity]);
 
-  const toggleLike = (carId) => {
-    setLikedCars((prev) => {
-      if (prev.includes(carId)) {
-        return prev.filter((id) => id !== carId);
-      } else {
-        return [...prev, carId];
-      }
-    });
-  };
-
   const toggleCompare = (carId) => {
     setComparedCars((prev) => {
       if (prev.includes(carId)) {
         return prev.filter((id) => id !== carId);
       } else {
-        if (prev.length >= 3) {
-          alert('You can compare maximum 3 cars');
-          return prev;
+        if (prev.length >= 4) {
+          return prev; // Don't add if limit reached
         }
         return [...prev, carId];
       }
     });
   };
 
-  const removeFromLiked = (carId) => {
-    setLikedCars((prev) => prev.filter((id) => id !== carId));
-  };
-
   const removeFromCompare = (carId) => {
     setComparedCars((prev) => prev.filter((id) => id !== carId));
   };
 
-  const isLiked = (carId) => likedCars.includes(carId);
   const isCompared = (carId) => comparedCars.includes(carId);
 
   const value = {
-    likedCars,
     comparedCars,
     selectedCity,
     setSelectedCity,
-    toggleLike,
     toggleCompare,
-    removeFromLiked,
     removeFromCompare,
-    isLiked,
     isCompared,
   };
 

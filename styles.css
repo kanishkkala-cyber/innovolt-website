@@ -414,16 +414,23 @@ body {
     background: white;
     border: 2px solid #EF4444;
     color: #EF4444;
-    padding: 8px;
-    border-radius: 50%;
+    padding: 8px 12px;
+    border-radius: 8px;
     cursor: pointer;
     position: relative;
-    width: 40px;
+    min-width: 40px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
+    gap: 6px;
+}
+
+.compare-text {
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .action-icon-btn:hover {
@@ -931,6 +938,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    z-index: 401;
 }
 
 .compare-popup-overlay.active .compare-popup {
@@ -977,8 +985,8 @@ body {
 
 .compare-vehicles-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
     margin-bottom: 20px;
     max-height: 500px;
     overflow-y: auto;
@@ -988,11 +996,11 @@ body {
 .compare-vehicle-item {
     display: flex;
     align-items: center;
-    gap: 15px;
-    padding: 15px;
+    gap: 12px;
+    padding: 12px;
     background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     position: relative;
 }
 
@@ -1083,6 +1091,30 @@ body {
     background: #9ca3af;
     cursor: not-allowed;
     transform: none;
+}
+
+/* Compare popup car widget removal animation */
+.car-widget.removing {
+    animation: slideOutFade 0.3s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes slideOutFade {
+    0% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateX(-20px) scale(0.95);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-100px) scale(0.8);
+        max-height: 0;
+        margin: 0;
+        padding: 0;
+    }
 }
 
 /* Main Content */
@@ -1307,18 +1339,17 @@ body {
     color: white;
 }
 
-.car-compare-btn {
+.car-share-btn {
     position: absolute;
     top: 10px;
-    right: 50px;
+    right: 10px;
     background: rgba(255, 255, 255, 0.95);
-    border: 2px solid #ff0000;
+    border: 2px solid #EF4444;
     border-radius: 50%;
     width: 35px;
     height: 35px;
-    color: #ff0000;
+    color: #EF4444;
     font-size: 14px;
-    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
@@ -1329,15 +1360,87 @@ body {
     z-index: 10;
 }
 
+.car-share-btn:hover {
+    background: #EF4444;
+    color: white;
+    transform: scale(1.1);
+}
+
+.car-compare-btn {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #ff0000;
+    border-radius: 20px;
+    padding: 6px 12px;
+    color: #ff0000;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    white-space: nowrap;
+}
+
 .car-compare-btn:hover {
     background: #ff0000;
     color: white;
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .car-compare-btn.added {
     background: #ff0000;
     color: white;
+}
+
+.compare-btn-text {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* Compare limit message */
+.compare-limit-message {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4444;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.3s ease-out;
+}
+
+.compare-limit-message::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #ff4444;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
 .car-details {
@@ -1604,6 +1707,7 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    z-index: 501;
 }
 
 .comparison-results-overlay.active .comparison-results-popup {
@@ -1633,14 +1737,102 @@ body {
     font-size: 24px;
     color: #666;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
     border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
 }
 
 .comparison-results-close:hover {
     background: #EF4444;
     color: white;
+}
+
+.comparison-back-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #666;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comparison-back-btn:hover {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.vehicle-info-header {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.vehicle-info-card {
+    flex: 1;
+    text-align: center;
+    padding: 15px;
+    background: #f9fafb;
+    border-radius: 10px;
+    margin: 0 5px;
+}
+
+.vehicle-registration {
+    font-weight: bold;
+    font-size: 16px;
+    color: #374151;
+    margin-bottom: 5px;
+}
+
+.vehicle-oem {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 3px;
+}
+
+.vehicle-model {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.vehicle-info-row {
+    background: #f8fafc;
+}
+
+.vehicle-info-cell {
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.vehicle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.vehicle-year {
+    font-weight: bold;
+    font-size: 16px;
+    color: #374151;
+}
+
+.vehicle-oem {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.vehicle-model {
+    font-size: 13px;
+    color: #9ca3af;
 }
 
 .comparison-table {
@@ -1675,6 +1867,126 @@ body {
 
 .comparison-table tr:nth-child(even) {
     background: #f9fafb;
+}
+
+/* Enhanced comparison results styles */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #666;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #EF4444;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.comparison-content {
+    width: 100%;
+}
+
+.vehicle-names-header {
+    display: grid;
+    grid-template-columns: 200px repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.parameter-column {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: #374151;
+}
+
+.vehicle-name-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.vehicle-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.comparison-row {
+    transition: background-color 0.2s ease;
+}
+
+.comparison-row:hover {
+    background-color: #f8fafc;
+}
+
+.parameter-label {
+    font-weight: 600;
+    color: #374151;
+    background: #f8fafc;
+    border-right: 2px solid #e5e7eb;
+    width: 200px;
+    min-width: 200px;
+}
+
+.value-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.value-text {
+    flex: 1;
+}
+
+.comparison-indicator {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 4px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.comparison-indicator.better {
+    color: #059669;
+    background: #d1fae5;
+}
+
+.comparison-indicator.worse {
+    color: #dc2626;
+    background: #fee2e2;
 }
 
 /* Cars Across India Section */

@@ -321,6 +321,55 @@ const apiService = {
     } catch (error) {
       throw new Error('Supabase connection failed');
     }
+  },
+
+  // Get comparison data for multiple vehicles
+  async getComparisonData(vehicleIds) {
+    try {
+      console.log('🔍 API Service: Fetching comparison data for vehicles:', vehicleIds);
+      
+      const { data, error } = await supabase
+        .from('vehicles')
+        .select('*')
+        .in('Registration_No', vehicleIds);
+      
+      if (error) {
+        console.error('❌ Supabase error:', error);
+        throw error;
+      }
+
+      console.log('✅ API Service: Comparison data fetched:', data?.length || 0, 'vehicles');
+
+      // Transform the data for comparison
+      const comparisonData = data.map(vehicle => ({
+        id: vehicle.Registration_No,
+        title: `${new Date(vehicle['Registration date']).getFullYear()} ${vehicle.OEM} ${vehicle.Model}`,
+        image: '/placeholder-vehicle.svg',
+        price: vehicle['Selling Price'],
+        emi: vehicle.EMI,
+        kilometers: `${(vehicle['Kms run'] / 1000).toFixed(1)}k km`,
+        location: `${vehicle.City}, ${vehicle.State}`,
+        brand: vehicle.OEM,
+        year: new Date(vehicle['Registration date']).getFullYear().toString(),
+        registrationYear: new Date(vehicle['Registration date']).getFullYear().toString(),
+        vehicleNumber: vehicle.Registration_No,
+        // Additional comparison fields
+        batteryCapacity: vehicle['Battery Capacity (kwt)'] || 'N/A',
+        chargingTime: vehicle['Charging time (hours)'] || 'N/A',
+        topspeed: vehicle['Top Speed'] || 'N/A',
+        loadCapacity: vehicle['Load Capacity (kg)'] || 'N/A',
+        owners: vehicle['No. of Owners'] || 'N/A'
+      }));
+
+      return {
+        success: true,
+        data: comparisonData,
+        count: comparisonData.length
+      };
+    } catch (error) {
+      console.error('❌ API Service: Error fetching comparison data:', error);
+      throw new Error('Failed to fetch comparison data');
+    }
   }
 };
 

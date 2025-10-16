@@ -1,13 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobal } from '../contexts/GlobalContext';
 
 const CarWidget = ({ car }) => {
   const navigate = useNavigate();
-  const { toggleLike, toggleCompare, isLiked, isCompared } = useGlobal();
+  const { toggleCompare, isCompared, comparedCars } = useGlobal();
+  const [showLimitMessage, setShowLimitMessage] = useState(false);
 
   const handleCarClick = () => {
     navigate(`/vehicle/${car.id}`);
+  };
+
+  const handleShare = (e) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/vehicle/${car.id}`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: car.title,
+        text: `Check out this ${car.title} for ${car.price}`,
+        url: url
+      }).catch((error) => console.log('Error sharing:', error));
+    } else {
+      // Fallback - copy to clipboard
+      navigator.clipboard.writeText(url);
+      alert('Link copied to clipboard!');
+    }
+  };
+
+  const handleCompare = (e) => {
+    e.stopPropagation();
+    
+    if (comparedCars.length >= 4 && !isCompared(car.id)) {
+      setShowLimitMessage(true);
+      setTimeout(() => setShowLimitMessage(false), 3000);
+      return;
+    }
+    
+    toggleCompare(car.id);
   };
 
   // Helper function to format price with ₹ symbol
@@ -21,28 +51,31 @@ const CarWidget = ({ car }) => {
 
   return (
     <div className="car-widget" onClick={handleCarClick} style={{ cursor: 'pointer' }}>
+      {/* Limit message popup */}
+      {showLimitMessage && (
+        <div className="compare-limit-message">
+          Cannot compare more than 4 vehicles at a time
+        </div>
+      )}
+      
       <div className="car-image-container">
         <img src={car.image} alt={car.title} className="car-image" />
         <div className="car-actions">
           <button 
-            className={`car-heart-btn ${isLiked(car.id) ? 'liked' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleLike(car.id);
-            }}
+            className="car-share-btn"
+            onClick={handleShare}
             type="button"
+            title="Share vehicle"
           >
-            <i className="far fa-heart"></i>
+            <i className="fas fa-share-alt"></i>
           </button>
           <button 
             className={`car-compare-btn ${isCompared(car.id) ? 'added' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleCompare(car.id);
-            }}
+            onClick={handleCompare}
             type="button"
+            title="Compare vehicle"
           >
-            <i className="fas fa-balance-scale"></i>
+            <span className="compare-btn-text">Add to Compare</span>
           </button>
         </div>
         <div className="car-badge">

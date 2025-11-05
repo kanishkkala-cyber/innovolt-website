@@ -4,17 +4,6 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
 
-console.log('🔧 Supabase Config:', { 
-  url: supabaseUrl, 
-  keySet: !!supabaseKey,
-  keyLength: supabaseKey?.length || 0,
-  isPlaceholder: supabaseUrl.includes('placeholder') || supabaseKey.includes('placeholder'),
-  envVars: {
-    VITE_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
-    VITE_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY ? 'Set' : 'Not Set'
-  }
-})
-
 // Create Supabase client
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
@@ -33,39 +22,28 @@ const isSupabaseConfigured = () => {
 export const supabaseHelpers = {
   // Get all vehicles
   async getVehicles(filters = {}) {
-    console.log('🚗 Supabase Helper: Starting getVehicles with filters:', filters);
-    console.log('🔧 Supabase Helper: Table name:', TABLES.VEHICLES);
-    
     if (!isSupabaseConfigured()) {
-      console.warn('⚠️ Supabase Helper: Supabase not configured, returning empty array')
       return []
     }
 
     try {
-      console.log('🔍 Supabase Helper: Building query...');
-      
-      // First, let's test if we can access any data at all
-      console.log('🧪 Testing basic Supabase access...');
-      const testQuery = supabase.from(TABLES.VEHICLES).select('count', { count: 'exact' });
-      const { count, error: countError } = await testQuery;
-      console.log('📊 Table count test:', { count, countError: countError?.message });
-      
-      let query = supabase.from(TABLES.VEHICLES).select('*')
+      // Add range to get all records (Supabase defaults to 1000 max, increase if needed)
+      // Exclude Registration_No from select for privacy/compliance
+      let query = supabase.from(TABLES.VEHICLES)
+        .select('id, OEM, Model, "Model Type", "Main Stage", City, State, "Registration date", "Seized date", "Inventory days", "Kms run", "Selling Price", EMI, "Load Capacity (kg)", "Battery Capacity (kwt)", "Charging time (hours)", "Top Speed (km/h)", image_url_1, image_url_2, image_url_3, image_url_4', { count: 'exact' })
+        .range(0, 4999)
       
       // Apply filters
       if (filters.city && filters.city !== 'all') {
-        console.log('🏙️ Supabase Helper: Adding city filter:', filters.city);
         query = query.eq('City', filters.city)
       }
       
       if (filters.brand && filters.brand !== 'all') {
-        console.log('🏭 Supabase Helper: Adding brand filter:', filters.brand);
         query = query.eq('OEM', filters.brand)
       }
       
       // Apply sorting
       if (filters.sortBy) {
-        console.log('📊 Supabase Helper: Adding sort:', filters.sortBy);
         switch (filters.sortBy) {
           case 'price-low':
             query = query.order('Selling Price', { ascending: true })
@@ -90,105 +68,82 @@ export const supabaseHelpers = {
       
       // Apply limit
       if (filters.limit) {
-        console.log('📏 Supabase Helper: Adding limit:', filters.limit);
         query = query.limit(filters.limit)
       }
       
-      console.log('🚀 Supabase Helper: Executing query...');
-      const { data, error } = await query
-      
-      console.log('📊 Supabase Helper: Query result:', {
-        dataCount: data?.length || 0,
-        error: error?.message || null,
-        firstVehicle: data?.[0] ? {
-          Registration_No: data[0].Registration_No,
-          OEM: data[0].OEM,
-          Model: data[0].Model,
-          City: data[0].City
-        } : null
-      });
+      const { data, error, count } = await query
       
       if (error) {
-        console.error('❌ Supabase Helper: Query error:', error);
         throw new Error(`Failed to fetch vehicles: ${error.message}`)
       }
       
-      console.log('✅ Supabase Helper: Successfully fetched', data?.length || 0, 'vehicles');
+      console.log(`📦 [SUPABASE] Fetched ${data?.length || 0} vehicles from database (Total in DB: ${count || 'unknown'})`);
+      
       return data || []
     } catch (error) {
-      console.error('❌ Supabase Helper: Error in getVehicles:', error);
-      console.error('❌ Error details:', {
-        message: error.message,
-        stack: error.stack
-      });
       return []
     }
   },
 
-  // Get single vehicle by registration number
-  async getVehicleByRegNo(regNo) {
-    console.log('🚗 Supabase Helper: Starting getVehicleByRegNo for:', regNo);
-    
+  // Get single vehicle by UUID
+  async getVehicleById(id) {
     if (!isSupabaseConfigured()) {
-      console.warn('⚠️ Supabase Helper: Supabase not configured, returning null')
       return null
     }
 
     try {
-      console.log('🔍 Supabase Helper: Building single vehicle query...');
+      // Exclude Registration_No from select for privacy/compliance
       const { data, error } = await supabase
         .from(TABLES.VEHICLES)
-        .select('*')
-        .eq('Registration_No', regNo)
+        .select('id, OEM, Model, "Model Type", "Main Stage", City, State, "Registration date", "Seized date", "Inventory days", "Kms run", "Selling Price", EMI, "Load Capacity (kg)", "Battery Capacity (kwt)", "Charging time (hours)", "Top Speed (km/h)", image_url_1, image_url_2, image_url_3, image_url_4')
+        .eq('id', id)
         .single()
       
-      console.log('📊 Supabase Helper: Single vehicle query result:', {
-        data: data ? {
-          Registration_No: data.Registration_No,
-          OEM: data.OEM,
-          Model: data.Model,
-          City: data.City
-        } : null,
-        error: error?.message || null
-      });
-      
       if (error) {
-        console.error('❌ Supabase Helper: Single vehicle query error:', error);
         throw new Error(`Failed to fetch vehicle: ${error.message}`)
       }
       
-      console.log('✅ Supabase Helper: Successfully fetched single vehicle:', data?.Registration_No);
       return data
     } catch (error) {
-      console.error('❌ Supabase Helper: Error in getVehicleByRegNo:', error);
-      console.error('❌ Error details:', {
-        message: error.message,
-        stack: error.stack
-      });
       return null
     }
+  },
+
+  // Legacy function for backward compatibility (deprecated)
+  async getVehicleByRegNo(regNo) {
+    return this.getVehicleById(regNo);
   },
 
   // Create a lead
   async createLead(leadData) {
     if (!isSupabaseConfigured()) {
-      console.warn('Supabase not configured, simulating lead creation')
       return { id: Date.now(), ...leadData }
     }
 
     try {
+      // Log the data being sent for debugging
+      console.log('🔍 [SUPABASE] Creating lead with data:', leadData);
+      
       const { data, error } = await supabase
         .from(TABLES.LEADS)
         .insert([leadData])
         .select()
       
       if (error) {
-        throw new Error(`Failed to create lead: ${error.message}`)
+        console.error('❌ [SUPABASE] Error creating lead:', error);
+        console.error('❌ [SUPABASE] Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        throw new Error(`Failed to create lead: ${error.message}${error.details ? ` - ${error.details}` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''}`)
       }
       
+      console.log('✅ [SUPABASE] Lead created successfully:', data[0]);
       return data[0]
     } catch (error) {
-      console.warn('Error creating lead:', error.message)
+      console.error('❌ [SUPABASE] Exception in createLead:', error);
       throw error
     }
   },
@@ -196,7 +151,6 @@ export const supabaseHelpers = {
   // Get leads
   async getLeads() {
     if (!isSupabaseConfigured()) {
-      console.warn('Supabase not configured, returning empty array')
       return []
     }
 
@@ -212,7 +166,6 @@ export const supabaseHelpers = {
       
       return data || []
     } catch (error) {
-      console.warn('Error fetching leads:', error.message)
       return []
     }
   }

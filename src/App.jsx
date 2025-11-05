@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Catalogue from './pages/Catalogue';
 import Vehicle from './pages/Vehicle';
 import About from './pages/About';
+import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
@@ -24,6 +25,7 @@ function App() {
               <Route path="/catalogue" element={<Catalogue />} />
               <Route path="/vehicle/:id" element={<Vehicle />} />
               <Route path="/about" element={<About />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />

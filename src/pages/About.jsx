@@ -40,7 +40,7 @@ const About = () => {
       <section className="get-in-touch-section">
         <div className="content-wrapper">
           <h2 className="get-in-touch-heading">GET IN TOUCH WITH US</h2>
-          <div className="contact-content">
+          <div className="about-contact-content">
             <div className="contact-info">
               <div className="address-section">
                 <h3 className="address-heading">Head Office Address:</h3>

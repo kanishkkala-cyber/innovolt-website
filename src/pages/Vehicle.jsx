@@ -1,29 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import apiService from '../services/api';
+import CarWidget from '../components/CarWidget';
 
 const Vehicle = () => {
   const { id } = useParams();
   const [vehicle, setVehicle] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showLeadPopup, setShowLeadPopup] = useState(false);
+  const [relatedVehicles, setRelatedVehicles] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     city: '',
-    message: '',
     terms: false
   });
 
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
+        console.log('🖼️ [VEHICLE PAGE] ========================================');
+        console.log('🖼️ [VEHICLE PAGE] Fetching vehicle with ID:', id);
         const car = await apiService.getCar(id);
+        
+        if (car) {
+          console.log('✅ [VEHICLE PAGE] Vehicle data received:', {
+            id: car.id,
+            title: car.title,
+            image: car.image,
+            images: car.images,
+            imageCount: car.images?.length || 0,
+            hasMainImage: !!car.image,
+            hasImageArray: !!car.images && car.images.length > 0
+          });
+          
+          // Log each image URL with detailed info
+          if (car.images && car.images.length > 0) {
+            console.log('📸 [VEHICLE PAGE] Image URLs array (checking connectivity):');
+            car.images.forEach((img, idx) => {
+              const imageType = img 
+                ? (img.startsWith('http') ? '🌐 External URL' 
+                   : img.startsWith('/') ? '📁 Local path' 
+                   : '❓ Unknown format') 
+                : '❌ NULL/EMPTY';
+              console.log(`  📸 [${idx}] ${imageType}: ${img || '(empty)'}`);
+              
+              // Test image connectivity by creating Image object
+              if (img && img.trim() !== '') {
+                const testImg = new Image();
+                testImg.onload = () => {
+                  console.log(`  ✅ [${idx}] Image connection test PASSED: ${img}`);
+                  console.log(`     Image dimensions: ${testImg.width}x${testImg.height}`);
+                  console.log(`     ✅ This URL should work in img tags`);
+                };
+                testImg.onerror = (error) => {
+                  console.error(`  ❌ [${idx}] Image connection test FAILED: ${img}`);
+                  console.error(`     Error: Authority invalid or CORS blocked`);
+                  console.error(`     💡 Solution: Make sure file is set to "Anyone with the link can view"`);
+                  console.error(`     💡 Alternative: Consider using a CDN or image hosting service`);
+                };
+                testImg.src = img;
+              }
+            });
+          } else {
+            console.warn('⚠️ [VEHICLE PAGE] No images array found or empty!');
+          }
+        } else {
+          console.error('❌ [VEHICLE PAGE] Vehicle data is null/undefined');
+        }
+        console.log('🖼️ [VEHICLE PAGE] ========================================');
+        
         setVehicle(car);
+        
+        // Fetch related vehicles after getting the current vehicle
+        if (car) {
+          fetchRelatedVehicles(car);
+        }
       } catch (error) {
-        console.error('Error fetching vehicle:', error);
+        console.error('❌ [VEHICLE PAGE] Error fetching vehicle:', error);
         setVehicle(null);
       }
     };
@@ -33,7 +90,43 @@ const Vehicle = () => {
     }
   }, [id]);
 
+  const fetchRelatedVehicles = async (currentVehicle) => {
+    try {
+      // Get all vehicles first
+      const allVehicles = await apiService.getCars();
+      
+      // Filter related vehicles based on brand and city
+      const related = allVehicles.filter(car => {
+        // Don't include the current vehicle
+        if (car.id === currentVehicle.id) return false;
+        
+        // Extract brand from title (e.g., "Mahindra Treo Zor" -> "Mahindra")
+        const currentBrand = currentVehicle.title.split(' ')[0].toLowerCase();
+        const carBrand = car.title.split(' ')[0].toLowerCase();
+        
+        // Check if same brand or same city
+        const sameBrand = currentBrand === carBrand;
+        const sameCity = currentVehicle.location.toLowerCase() === car.location.toLowerCase();
+        
+        return sameBrand || sameCity;
+      });
+      
+      // Limit to 8 vehicles and shuffle them
+      const shuffled = related.sort(() => 0.5 - Math.random()).slice(0, 8);
+      setRelatedVehicles(shuffled);
+    } catch (error) {
+      console.error('Error fetching related vehicles:', error);
+      setRelatedVehicles([]);
+    }
+  };
+
   const handleImageClick = (index) => {
+    const newImageUrl = vehicle?.images?.[index];
+    console.log('🖼️ [VEHICLE PAGE] ========================================');
+    console.log('🖼️ [VEHICLE PAGE] Image clicked - Changing to index:', index);
+    console.log('🖼️ [VEHICLE PAGE] Previous image index:', currentImageIndex);
+    console.log('🖼️ [VEHICLE PAGE] New image URL:', newImageUrl || '(empty)');
+    console.log('🖼️ [VEHICLE PAGE] ========================================');
     setCurrentImageIndex(index);
   };
 
@@ -57,22 +150,20 @@ const Vehicle = () => {
 
     try {
       const leadData = {
-        vehicleRegNo: id, // Use registration number as vehicle reference
+        vehicleId: id, // Use UUID as vehicle reference (from useParams)
         name: formData.name,
-        phone: formData.phone,
-        city: formData.city,
-        message: formData.message
+        phone: formData.phone, // Phone formatting handled in api.js
+        city: formData.city
       };
 
       const response = await apiService.submitLead(leadData);
-      setSubmitStatus({ type: 'success', message: response.message });
+      setSubmitStatus({ type: 'success', message: 'Thank you for reaching out! Our team will get in touch with you shortly.' });
       
-      // Reset form and close after 3 seconds
-      setTimeout(() => {
-        setFormData({ name: '', phone: '', city: '', message: '', terms: false });
-        setSubmitStatus(null);
-        setShowLeadPopup(false);
-      }, 3000);
+      // Reset form after showing success message
+      setFormData({ name: '', phone: '', city: '', terms: false });
+      
+      // Keep the popup open to show the thank you message
+      // User can close it manually or it will close when they click outside
     } catch (error) {
       setSubmitStatus({ 
         type: 'error', 
@@ -97,6 +188,22 @@ const Vehicle = () => {
     }
   };
 
+  const scrollLeft = () => {
+    const scrollContainer = document.querySelector('.vehicles-scroll');
+    if (scrollContainer) {
+      const scrollAmount = 320; // Width of one card + gap
+      scrollContainer.scrollLeft -= scrollAmount;
+    }
+  };
+
+  const scrollRight = () => {
+    const scrollContainer = document.querySelector('.vehicles-scroll');
+    if (scrollContainer) {
+      const scrollAmount = 320; // Width of one card + gap
+      scrollContainer.scrollLeft += scrollAmount;
+    }
+  };
+
   if (!vehicle) {
     return (
       <div style={{ padding: '100px 20px', textAlign: 'center' }}>
@@ -108,8 +215,6 @@ const Vehicle = () => {
     );
   }
 
-  // Similar cars (placeholder for now)
-  const similarCars = []; // Will be implemented when we have more data
 
   return (
     <main className="vehicle-main">
@@ -133,7 +238,31 @@ const Vehicle = () => {
             <img 
               src={vehicle.images[currentImageIndex]} 
               alt={vehicle.title} 
-              className="main-image" 
+              className="main-image"
+              onLoad={(e) => {
+                console.log('✅ [VEHICLE PAGE] ========================================');
+                console.log('✅ [VEHICLE PAGE] Main image LOADED successfully!');
+                console.log('✅ [VEHICLE PAGE] Image Details:', {
+                  index: currentImageIndex,
+                  url: vehicle.images[currentImageIndex],
+                  naturalWidth: e.target.naturalWidth,
+                  naturalHeight: e.target.naturalHeight,
+                  complete: e.target.complete,
+                  loaded: true
+                });
+                console.log('✅ [VEHICLE PAGE] ========================================');
+              }}
+              onError={(e) => {
+                console.error('❌ [VEHICLE PAGE] ========================================');
+                console.error('❌ [VEHICLE PAGE] Main image FAILED to load!');
+                console.error('❌ [VEHICLE PAGE] Error Details:', {
+                  index: currentImageIndex,
+                  expectedUrl: vehicle.images[currentImageIndex],
+                  actualAttemptUrl: e.target.src,
+                  error: 'Image load error - URL may be invalid or unreachable'
+                });
+                console.error('❌ [VEHICLE PAGE] ========================================');
+              }}
             />
           </div>
           <div className="thumbnail-container">
@@ -145,6 +274,24 @@ const Vehicle = () => {
                   alt={`${vehicle.title} ${index + 1}`}
                   className={`thumbnail ${index === currentImageIndex ? 'active' : ''}`}
                   onClick={() => handleImageClick(index)}
+                  onLoad={(e) => {
+                    console.log(`✅ [VEHICLE PAGE] Thumbnail [${index}] LOADED - URL: ${image}`, {
+                      index: index,
+                      url: image,
+                      naturalWidth: e.target.naturalWidth,
+                      naturalHeight: e.target.naturalHeight,
+                      isActive: index === currentImageIndex,
+                      loaded: true
+                    });
+                  }}
+                  onError={(e) => {
+                    console.error(`❌ [VEHICLE PAGE] Thumbnail [${index}] FAILED to load - URL: ${image}`, {
+                      index: index,
+                      expectedUrl: image,
+                      actualAttemptUrl: e.target.src,
+                      error: 'Thumbnail load error - URL may be invalid or unreachable'
+                    });
+                  }}
                 />
               ))}
             </div>
@@ -169,9 +316,9 @@ const Vehicle = () => {
             {/* Pricing Section */}
             <div className="pricing-section">
               <div className="price-label">On road price</div>
-              <div className="price-main">₹{vehicle.price}</div>
+              <div className="price-main">{vehicle.price}</div>
               <div className="emi-label">EMI option</div>
-              <div className="emi-current">EMI ₹{vehicle.emi}/m</div>
+              <div className="emi-current">EMI {vehicle.emi}/m</div>
             </div>
 
             {/* Action Buttons */}
@@ -262,44 +409,27 @@ const Vehicle = () => {
         </div>
       </div>
 
-      {/* More like this section */}
-      {similarCars.length > 0 && (
-        <div className="more-like-this-section">
-          <div className="section-header">
-            <h2>Still can't decide?</h2>
-          </div>
-          <div className="section-subtitle">
-            <p>Explore cars similar to {vehicle.title}</p>
-          </div>
-          <div className="cars-slider-container">
-            <div className="cars-slider">
-              {similarCars.map((car) => (
-                <Link 
-                  to={`/vehicle/${car.id}`} 
-                  key={car.id} 
-                  className="car-card"
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <div className="car-image-container">
-                    <img src={car.image} alt={car.title} className="car-image" />
+      {/* More vehicles you can try section */}
+      {relatedVehicles.length > 0 && (
+        <div className="more-vehicles-section">
+          <div className="container">
+            <div className="section-header">
+              <h2>More vehicles you can try</h2>
+            </div>
+            <div className="vehicles-scroll-container">
+              <button className="scroll-btn scroll-left" onClick={scrollLeft}>
+                <i className="fas fa-chevron-left"></i>
+              </button>
+              <div className="vehicles-scroll">
+                {relatedVehicles.map((car) => (
+                  <div key={car.id} className="vehicle-card-wrapper">
+                    <CarWidget car={car} />
                   </div>
-                  <div className="car-details">
-                    <h3 className="car-title">{car.title}</h3>
-                    <div className="car-specs">
-                      <span className="car-spec-tag">{car.kilometers}</span>
-                      <span className="car-spec-tag">{car.owners}</span>
-                    </div>
-                    <div className="car-pricing">
-                      <div className="car-emi">EMI {car.emi}/m*</div>
-                      <div className="car-price">{car.price}</div>
-                    </div>
-                    <div className="car-location">
-                      <i className="fas fa-map-marker-alt"></i>
-                      {car.location}
-                    </div>
-                  </div>
-                </Link>
-              ))}
+                ))}
+              </div>
+              <button className="scroll-btn scroll-right" onClick={scrollRight}>
+                <i className="fas fa-chevron-right"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -339,14 +469,19 @@ const Vehicle = () => {
                 
                 <div className="form-group">
                   <label htmlFor="leadPhone">Phone Number*</label>
-                  <input
-                    type="tel"
-                    id="leadPhone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div className="phone-input-container">
+                    <span className="phone-prefix">+91</span>
+                    <input
+                      type="tel"
+                      id="leadPhone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Enter 10-digit mobile number"
+                      maxLength="10"
+                      required
+                    />
+                  </div>
                 </div>
                 
                 <div className="form-group">
@@ -361,17 +496,6 @@ const Vehicle = () => {
                   />
                 </div>
                 
-                <div className="form-group">
-                  <label htmlFor="leadMessage">Message (Optional)</label>
-                  <textarea
-                    id="leadMessage"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows="3"
-                    placeholder="Any specific questions or requirements..."
-                  />
-                </div>
                 
                 <div className="form-group checkbox-group">
                   <input

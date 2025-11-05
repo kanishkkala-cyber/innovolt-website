@@ -19,7 +19,6 @@ const Home = () => {
         const cars = await apiService.getCars();
         setFeaturedCars(cars.slice(0, 12)); // Get first 12 cars
       } catch (err) {
-        console.error('Error fetching featured cars:', err);
         // Fallback to empty array if API fails
         setFeaturedCars([]);
       } finally {
@@ -28,6 +27,18 @@ const Home = () => {
     };
 
     fetchFeaturedCars();
+  }, []);
+
+  // Handle hash navigation to scroll to "How It Works" section
+  useEffect(() => {
+    if (window.location.hash === '#how-it-works') {
+      setTimeout(() => {
+        const element = document.getElementById('how-it-works');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
+    }
   }, []);
   const [slidesToShow, setSlidesToShow] = useState(3); // Default for desktop
   const [slideWidth, setSlideWidth] = useState(320); // Default slide width
@@ -55,14 +66,38 @@ const Home = () => {
   const maxSlide = Math.max(0, featuredCars.length - slidesToShow);
 
   const cities = [
-    { name: 'Bangalore', icon: 'fa-building' },
-    { name: 'Chennai', icon: 'fa-water' },
-    { name: 'Hyderabad', icon: 'fa-university' },
-    { name: 'Pune', icon: 'fa-city' },
-    { name: 'Agra', icon: 'fa-landmark' },
-    { name: 'Delhi', icon: 'fa-monument' },
-    { name: 'Kanpur', icon: 'fa-industry' },
-    { name: 'Lucknow', icon: 'fa-mosque' }
+    { 
+      name: 'Bangalore', 
+      image: 'https://lp-cms-production.imgix.net/2019-06/9483508eeee2b78a7356a15ed9c337a1-bengaluru-bangalore.jpg?sharp=10&vib=20&w=600&h=400'
+    },
+    { 
+      name: 'Chennai', 
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Chennai_Central.jpg/330px-Chennai_Central.jpg'
+    },
+    { 
+      name: 'Hyderabad', 
+      image: 'https://cdn.britannica.com/77/22877-050-9EFB35D4/Charminar-city-Hyderabad-India-Telangana.jpg'
+    },
+    { 
+      name: 'Pune', 
+      image: 'https://timesofindia.indiatimes.com/photo/40367788.cms'
+    },
+    { 
+      name: 'Agra', 
+      image: 'https://upload.wikimedia.org/wikipedia/commons/6/68/Taj_Mahal%2C_Agra%2C_India.jpg'
+    },
+    { 
+      name: 'Delhi', 
+      image: 'https://cdn.britannica.com/37/189837-050-F0AF383E/New-Delhi-India-War-Memorial-arch-Sir.jpg'
+    },
+    { 
+      name: 'Kanpur', 
+      image: 'https://upload.wikimedia.org/wikipedia/commons/a/af/J.K._Temple_%28cropped%29.jpg'
+    },
+    { 
+      name: 'Lucknow', 
+      image: 'https://www.uptourism.gov.in/images/rumigate.jpg'
+    }
   ];
 
   const handlePrevSlide = () => {
@@ -315,15 +350,35 @@ const Home = () => {
             <div className="cities-slider-wrapper">
               <div 
                 className="cities-slider"
-                style={{ transform: `translateX(-${citiesSlide * 220}px)` }}
+                style={{ transform: `translateX(-${citiesSlide * 270}px)` }}
               >
                 {cities.map((city) => (
-                  <div key={city.name} className="city-card">
+                  <Link 
+                    key={city.name} 
+                    to={`/catalogue?location=${city.name}`}
+                    className="city-card"
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
                     <div className="city-icon">
-                      <i className={`fas ${city.icon}`}></i>
+                      {city.image ? (
+                        <img 
+                          src={city.image} 
+                          alt={city.name}
+                          className="city-image"
+                          onError={(e) => {
+                            // Fallback to icon if image fails to load
+                            e.target.style.display = 'none';
+                            const icon = e.target.parentElement.querySelector('.city-icon-fallback');
+                            if (icon) icon.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      <div className={`city-icon-fallback ${city.image ? '' : 'show'}`} style={{ display: city.image ? 'none' : 'flex' }}>
+                        <i className={`fas ${city.icon || 'fa-map-marker-alt'}`}></i>
+                      </div>
                     </div>
                     <h3 className="city-name">{city.name}</h3>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -336,13 +391,6 @@ const Home = () => {
             >
               <i className="fas fa-chevron-right"></i>
             </button>
-          </div>
-          
-          <div className="view-all-container">
-            <Link to="/catalogue" className="view-all-btn">
-              <span>View All Locations</span>
-              <i className="fas fa-arrow-right"></i>
-            </Link>
           </div>
         </div>
       </section>

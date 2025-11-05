@@ -6,6 +6,7 @@ const CarWidget = ({ car }) => {
   const navigate = useNavigate();
   const { toggleCompare, isCompared, comparedCars } = useGlobal();
   const [showLimitMessage, setShowLimitMessage] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const handleCarClick = () => {
     navigate(`/vehicle/${car.id}`);
@@ -20,7 +21,7 @@ const CarWidget = ({ car }) => {
         title: car.title,
         text: `Check out this ${car.title} for ${car.price}`,
         url: url
-      }).catch((error) => console.log('Error sharing:', error));
+      }).catch(() => {});
     } else {
       // Fallback - copy to clipboard
       navigator.clipboard.writeText(url);
@@ -40,13 +41,11 @@ const CarWidget = ({ car }) => {
     toggleCompare(car.id);
   };
 
-  // Helper function to format price with ₹ symbol
+  // Helper function to format price (price already formatted in Indian system by API)
   const formatPrice = (price) => {
     if (!price) return '';
-    // If price already has ₹ symbol, return as is
-    if (price.includes('₹')) return price;
-    // Add ₹ symbol at the beginning
-    return `₹${price}`;
+    // Price is already formatted by API in Indian lakhs/crores format
+    return price;
   };
 
   return (
@@ -59,7 +58,14 @@ const CarWidget = ({ car }) => {
       )}
       
       <div className="car-image-container">
-        <img src={car.image} alt={car.title} className="car-image" />
+        <img 
+          src={imageError ? '/placeholder-vehicle.svg' : car.image} 
+          alt={car.title} 
+          className="car-image"
+          onError={() => {
+            setImageError(true);
+          }}
+        />
         <div className="car-actions">
           <button 
             className="car-share-btn"

@@ -69,3 +69,4 @@ const RangeSlider = ({ min, max, value, onChange, label, formatValue, step = 1 }
 export default RangeSlider;
 
 
+

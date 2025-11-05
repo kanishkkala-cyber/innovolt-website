@@ -26,6 +26,7 @@ const Footer = () => {
               <h3 className="footer-heading">COMPANY</h3>
               <ul className="footer-links">
                 <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/blog">Blog</Link></li>
                 <li><Link to="/contact">Contact Us</Link></li>
                 <li><Link to="/terms">Terms & Conditions</Link></li>
                 <li><Link to="/privacy">Privacy Policy</Link></li>
@@ -39,22 +40,15 @@ const Footer = () => {
               <div className="vehicles-flex-container">
                 <div className="vehicles-column">
                   <ul className="footer-links">
-                    <li><Link to="/catalogue?brand=Piaggio E City Fx">Piaggio</Link></li>
-                    <li><Link to="/catalogue?brand=Mahindra Treo Plus">Mahindra</Link></li>
-                    <li><Link to="/catalogue?brand=Etrio">Etrio</Link></li>
+                    <li><Link to="/catalogue?model=Piaggio">Piaggio</Link></li>
+                    <li><Link to="/catalogue?model=Mahindra">Mahindra</Link></li>
+                    <li><Link to="/catalogue?model=Etrio">Etrio</Link></li>
                   </ul>
                 </div>
                 <div className="vehicles-column">
                   <ul className="footer-links">
-                    <li><Link to="/catalogue?brand=Euler">Euler</Link></li>
-                    <li><Link to="/catalogue?brand=Montra Super Auto">Montra Super Auto</Link></li>
-                    <li><Link to="/catalogue?brand=Piaggio E City Fx">Piaggio E City Fx</Link></li>
-                  </ul>
-                </div>
-                <div className="vehicles-column">
-                  <ul className="footer-links">
-                    <li><Link to="/catalogue?brand=Bajaj RE E TEC 9.0">Bajaj RE E TEC 9.0</Link></li>
-                    <li><Link to="/catalogue?brand=Mahindra Treo Plus">Mahindra Treo Plus</Link></li>
+                    <li><Link to="/catalogue?model=Euler">Euler</Link></li>
+                    <li><Link to="/catalogue?model=Montra">Montra</Link></li>
                   </ul>
                 </div>
               </div>

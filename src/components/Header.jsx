@@ -6,7 +6,6 @@ import LocationPopup from './LocationPopup';
 import CallPopup from './CallPopup';
 import ComparePopup from './ComparePopup';
 import ComparisonResultsPopup from './ComparisonResultsPopup';
-import DynamicSearch from './DynamicSearch';
 
 const Header = () => {
   const { comparedCars, selectedCity } = useGlobal();
@@ -15,24 +14,7 @@ const Header = () => {
   const [callPopupOpen, setCallPopupOpen] = useState(false);
   const [comparePopupOpen, setComparePopupOpen] = useState(false);
   const [comparisonResultsOpen, setComparisonResultsOpen] = useState(false);
-  const [searchText, setSearchText] = useState('');
-  const [searchDropdownOpen, setSearchDropdownOpen] = useState(false);
-  const [rotatingWord, setRotatingWord] = useState('model');
   const [animateCount, setAnimateCount] = useState(false);
-
-  const words = ['location', 'price', 'model', 'company'];
-  const [wordIndex, setWordIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % words.length);
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    setRotatingWord(words[wordIndex]);
-  }, [wordIndex]);
 
   // Animate compare count when it changes
   useEffect(() => {
@@ -58,48 +40,37 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Center Section - Search Bar */}
+          {/* Center Section - Navigation Menu */}
           <div className="header-center">
-            <div className="search-bar">
-              <div className="search-input-group">
-                <i className="fas fa-search search-icon"></i>
-                <input 
-                  type="text" 
-                  className="search-input" 
-                  id="searchInput"
-                  value={searchText}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSearchText(value);
-                    setSearchDropdownOpen(value.trim() !== '');
-                  }}
-                  onFocus={(e) => {
-                    e.target.nextSibling.style.opacity = '0';
-                    if (e.target.value.trim() !== '') {
-                      setSearchDropdownOpen(true);
-                    }
-                  }}
-                  onBlur={(e) => {
-                    if (!searchText) e.target.nextSibling.style.opacity = '1';
-                    // Delay closing to allow clicking on suggestions
-                    setTimeout(() => setSearchDropdownOpen(false), 200);
-                  }}
-                />
-                <div className="search-placeholder" id="searchPlaceholder">
-                  <span className="placeholder-text">Search by </span>
-                  <span className="rotating-text" id="rotatingText">{rotatingWord}</span>
-                </div>
-              </div>
-              {searchDropdownOpen && (
-                <>
-                  <DynamicSearch 
-                    searchText={searchText}
-                    setSearchText={setSearchText}
-                    onClose={() => setSearchDropdownOpen(false)}
-                  />
-                </>
-              )}
-            </div>
+            <nav className="header-nav">
+              <Link to="/catalogue" className="nav-link">Buy Car</Link>
+              <Link 
+                to="/#how-it-works" 
+                className="nav-link"
+                onClick={(e) => {
+                  // If we're not on home page, navigate first
+                  if (window.location.pathname !== '/') {
+                    // Navigate to home with hash
+                    window.location.href = '/#how-it-works';
+                    e.preventDefault();
+                  } else {
+                    // If already on home, scroll to section
+                    e.preventDefault();
+                    setTimeout(() => {
+                      const element = document.getElementById('how-it-works');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }, 100);
+                  }
+                }}
+              >
+                How Does It Work
+              </Link>
+              <Link to="/about" className="nav-link">About Us</Link>
+              <Link to="/blog" className="nav-link">Blog</Link>
+              <Link to="/contact" className="nav-link">Contact Us</Link>
+            </nav>
           </div>
 
           {/* Right Section - Location, Call Us, and Action Icons */}

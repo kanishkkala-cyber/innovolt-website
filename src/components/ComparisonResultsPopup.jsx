@@ -16,7 +16,6 @@ const ComparisonResultsPopup = ({ open, onClose, onBack }) => {
         const cars = await apiService.getCars();
         setAllCars(cars);
       } catch (error) {
-        console.error('Error fetching cars for comparison:', error);
         // Fallback to local data
         setAllCars(carData);
       }
@@ -81,15 +80,10 @@ const ComparisonResultsPopup = ({ open, onClose, onBack }) => {
   };
 
   useEffect(() => {
-    console.log('ComparisonResultsPopup useEffect:', { open, selectedCars: selectedCars.length, allCars: allCars.length });
-    
     if (open && selectedCars.length > 0) {
-      console.log('Setting comparison data:', selectedCars);
       setComparisonData(selectedCars);
       setLoading(false);
-      console.log('Comparison data set successfully');
     } else if (open && selectedCars.length === 0) {
-      console.log('No selected cars found for comparison');
       setLoading(false);
     }
   }, [open, selectedCars]);

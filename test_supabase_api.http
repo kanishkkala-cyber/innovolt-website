@@ -1,0 +1,25 @@
+### Supabase API Test - Get All Vehicles
+### Copy this into Postman or use with REST Client extension in VS Code
+
+### Test 1: Get All Vehicles (with count)
+GET https://samlhxirwartjigfscdd.supabase.co/rest/v1/Vehicles?select=*
+apikey: YOUR_SUPABASE_ANON_KEY_HERE
+Authorization: Bearer YOUR_SUPABASE_ANON_KEY_HERE
+Range: 0-499
+Prefer: count=exact
+
+### Test 2: Get Vehicles with Limit
+GET https://samlhxirwartjigfscdd.supabase.co/rest/v1/Vehicles?select=*&limit=500
+apikey: YOUR_SUPABASE_ANON_KEY_HERE
+Authorization: Bearer YOUR_SUPABASE_ANON_KEY_HERE
+
+### Test 3: Get Only Count (fast)
+GET https://samlhxirwartjigfscdd.supabase.co/rest/v1/Vehicles?select=id&limit=1
+apikey: YOUR_SUPABASE_ANON_KEY_HERE
+Authorization: Bearer YOUR_SUPABASE_ANON_KEY_HERE
+Prefer: count=exact
+
+### Replace YOUR_SUPABASE_ANON_KEY_HERE with your actual anon key from:
+### Supabase Dashboard → Settings → API → anon public key
+
+

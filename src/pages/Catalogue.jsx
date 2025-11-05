@@ -16,8 +16,8 @@ const Catalogue = () => {
   // Filter states
   const [selectedLocation, setSelectedLocation] = useState([]);
   const [selectedModels, setSelectedModels] = useState(['all']);
-  const [budgetRange, setBudgetRange] = useState({ min: 100000, max: 350000 });
-  const [yearRange, setYearRange] = useState({ min: 2022, max: 2024 });
+  const [budgetRange, setBudgetRange] = useState({ min: 0, max: 10000000 }); // Very wide initial range to show all
+  const [yearRange, setYearRange] = useState({ min: 2000, max: new Date().getFullYear() + 1 }); // Very wide initial range to show all
   
   const [sortBy, setSortBy] = useState('relevance');
   const [loading, setLoading] = useState(true);
@@ -69,6 +69,7 @@ const Catalogue = () => {
       try {
         setLoading(true);
         const carsData = await apiService.getCars();
+        console.log(`📊 [CATALOGUE] Received ${carsData.length} vehicles from API`);
         setCars(carsData);
         setFilteredCars(carsData);
         
@@ -80,17 +81,30 @@ const Catalogue = () => {
         const models = [...new Set(carsData.map(car => car.brand))].sort();
         setAvailableModels(models);
         
-        // Set fixed price range (1L to 3.5L)
-        setPriceRange({ min: 100000, max: 350000 });
-        setBudgetRange({ min: 100000, max: 350000 });
+        // Extract price range from actual data
+        const prices = carsData
+          .map(car => parseInt(car.price.replace(/[₹,]/g, '')) || 0)
+          .filter(price => price > 0);
+        const minPrice = prices.length > 0 ? Math.min(...prices) : 100000;
+        const maxPrice = prices.length > 0 ? Math.max(...prices) : 350000;
         
-        // Set fixed year range (2022 onwards)
-        setYearRangeData({ min: 2022, max: 2024 });
-        setYearRange({ min: 2022, max: 2024 });
+        // Extract year range from actual data
+        const years = carsData
+          .map(car => parseInt(car.year) || 0)
+          .filter(year => year > 0 && !isNaN(year));
+        const minYear = years.length > 0 ? Math.min(...years) : 2020;
+        const maxYear = years.length > 0 ? Math.max(...years) : new Date().getFullYear();
+        
+        setPriceRange({ min: minPrice, max: maxPrice });
+        setBudgetRange({ min: minPrice, max: maxPrice });
+        
+        setYearRangeData({ min: minYear, max: maxYear });
+        setYearRange({ min: minYear, max: maxYear });
+        
+        console.log(`📊 [CATALOGUE] Auto-detected ranges - Price: ₹${minPrice} to ₹${maxPrice}, Year: ${minYear} to ${maxYear}`);
         
       } catch (err) {
         setError('Failed to load cars. Please try again.');
-        console.error('Error fetching cars:', err);
       } finally {
         setLoading(false);
       }
@@ -101,11 +115,14 @@ const Catalogue = () => {
 
   // Apply filters
   useEffect(() => {
-    // Show loading spinner when filters are being applied
+    // Show loading with smooth transition
     setFilterLoading(true);
     
-    // Simulate a small delay for better UX (optional)
-    const timeoutId = setTimeout(() => {
+    // Store timeout IDs for cleanup
+    let timeoutId2, timeoutId3;
+    
+    // Add a small delay to ensure smooth transition
+    const timeoutId1 = setTimeout(() => {
       let filtered = [...cars];
 
       // Location filter
@@ -121,16 +138,32 @@ const Catalogue = () => {
       }
 
       // Budget filter
+      const beforeBudgetFilter = filtered.length;
       filtered = filtered.filter((car) => {
         const price = parseInt(car.price.replace(/[₹,]/g, '')) || 0;
+        // Include vehicles with price 0 or invalid (missing price data)
+        if (price === 0 || !car.price || car.price.trim() === '') {
+          return true; // Include vehicles with missing/invalid prices
+        }
         return price >= budgetRange.min && price <= budgetRange.max;
       });
+      if (beforeBudgetFilter !== filtered.length) {
+        console.log(`💰 [FILTER] Budget filter (₹${budgetRange.min}-₹${budgetRange.max}) filtered out ${beforeBudgetFilter - filtered.length} vehicles`);
+      }
 
       // Year filter
+      const beforeYearFilter = filtered.length;
       filtered = filtered.filter((car) => {
         const year = parseInt(car.year) || 0;
+        // Handle "N/A" years - include them or exclude them?
+        if (car.year === 'N/A' || isNaN(year) || year === 0) {
+          return true; // Include vehicles with invalid/missing years
+        }
         return year >= yearRange.min && year <= yearRange.max;
       });
+      if (beforeYearFilter !== filtered.length) {
+        console.log(`📅 [FILTER] Year filter (${yearRange.min}-${yearRange.max}) filtered out ${beforeYearFilter - filtered.length} vehicles`);
+      }
 
       // Sort
       switch (sortBy) {
@@ -159,12 +192,25 @@ const Catalogue = () => {
           break;
       }
 
-      setFilteredCars(filtered);
-      setCurrentPage(1); // Reset to first page when filters change
-      setFilterLoading(false); // Hide loading spinner
-    }, 300); // 300ms delay for smooth UX
-
-    return () => clearTimeout(timeoutId);
+      console.log(`✅ [CATALOGUE] Final filtered count: ${filtered.length} vehicles (from ${cars.length} total)`);
+      
+      // Update filtered cars with a slight delay for smooth transition
+      timeoutId2 = setTimeout(() => {
+        setFilteredCars(filtered);
+        setCurrentPage(1); // Reset to first page when filters change
+        
+        // Hide loading after results are updated
+        timeoutId3 = setTimeout(() => {
+          setFilterLoading(false);
+        }, 200);
+      }, 150);
+    }, 50); // Small delay before starting filter to show loading state
+    
+    return () => {
+      clearTimeout(timeoutId1);
+      if (timeoutId2) clearTimeout(timeoutId2);
+      if (timeoutId3) clearTimeout(timeoutId3);
+    };
   }, [cars, selectedLocation, selectedModels, budgetRange, yearRange, sortBy]);
 
   const handleModelChange = (model) => {
@@ -300,34 +346,43 @@ const Catalogue = () => {
         {/* Main Content Area */}
         <div className="catalogue-content">
           {/* Results Header */}
-          {!filterLoading && (
-            <div className="results-header">
-              <div className="results-count">
-                <h2>{filteredCars.length} Used 3W EVs Available</h2>
-              </div>
-              <div className="sort-options">
-                <label htmlFor="sort-select">Sort by:</label>
-                <CustomDropdown
-                  options={sortOptions}
-                  value={sortBy}
-                  onChange={setSortBy}
-                  placeholder="Select sorting option"
-                />
-              </div>
+          <div className="results-header">
+            <div className="results-count">
+              <h2>{filteredCars.length} Used 3W EVs Available</h2>
             </div>
-          )}
+            <div className="sort-options">
+              <label htmlFor="sort-select">Sort by:</label>
+              <CustomDropdown
+                options={sortOptions}
+                value={sortBy}
+                onChange={setSortBy}
+                placeholder="Select sorting option"
+              />
+            </div>
+          </div>
 
           {/* Cars Grid */}
-          <div className="cars-grid">
+          <div className="cars-grid" style={{ position: 'relative' }}>
+            <div 
+              className={`filter-loading-overlay ${filterLoading ? 'active' : ''}`}
+            >
+              <div className="loading-spinner" style={{ 
+                borderWidth: '4px',
+                borderColor: '#f3f4f6',
+                borderTopColor: '#EF4444',
+                animationDuration: '0.8s'
+              }}></div>
+              <p style={{ 
+                marginTop: '16px',
+                color: '#6b7280',
+                fontSize: '14px',
+                fontWeight: 500
+              }}>Loading vehicles...</p>
+            </div>
             {loading ? (
               <div className="loading-container">
                 <div className="loading-spinner"></div>
                 <p>Loading cars...</p>
-              </div>
-            ) : filterLoading ? (
-              <div className="loading-container">
-                <div className="loading-spinner"></div>
-                <p>Applying filters...</p>
               </div>
             ) : error ? (
               <div className="error-container">
@@ -354,7 +409,7 @@ const Catalogue = () => {
           </div>
 
           {/* Pagination Controls */}
-          {filteredCars.length > 0 && !filterLoading && (
+          {filteredCars.length > 0 && (
             <div className="pagination-container">
               {/* Pagination controls */}
               <div className="pagination-controls">

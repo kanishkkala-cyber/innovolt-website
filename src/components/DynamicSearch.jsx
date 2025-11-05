@@ -17,8 +17,6 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
         const carsData = await apiService.getCars();
         setCars(carsData);
       } catch (error) {
-        console.error('Error fetching cars for search:', error);
-        // Set empty array as fallback
         setCars([]);
       }
     };
@@ -41,15 +39,11 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
 
     setLoading(true);
     
-    // Debounce search to avoid too many calls
-    const timeoutId = setTimeout(() => {
-      const results = generateSuggestions(searchText, cars);
-      setSuggestions(results.slice(0, 7)); // Max 7 results
-      setLoading(false);
-    }, 500); // Increased delay to reduce calls
-
-    return () => clearTimeout(timeoutId);
-  }, [searchText, cars.length]); // Only depend on cars.length, not the full cars array
+    // Immediate search without debounce for better UX
+    const results = generateSuggestions(searchText, cars);
+    setSuggestions(results.slice(0, 8)); // Max 8 results
+    setLoading(false);
+  }, [searchText, cars]); // Depend on full cars array
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -69,25 +63,28 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
     const queryLower = query.toLowerCase().trim();
     const suggestions = [];
 
-    // Check if query is a number or price-related
-    const numericValue = parseNumericValue(query);
-    if (numericValue !== null) {
-      // Price-based suggestions
-      const priceSuggestions = generatePriceSuggestions(numericValue, carsData);
-      suggestions.push(...priceSuggestions);
-    }
+    // Priority 1: Search by company/brand (most important)
+    const companySuggestions = generateCompanySuggestions(queryLower, carsData);
+    suggestions.push(...companySuggestions);
 
-    // Check for location matches
-    const locationSuggestions = generateLocationSuggestions(queryLower, carsData);
-    suggestions.push(...locationSuggestions);
-
-    // Check for model/brand matches
+    // Priority 2: Search by model
     const modelSuggestions = generateModelSuggestions(queryLower, carsData);
     suggestions.push(...modelSuggestions);
 
-    // Check for specific vehicle matches
+    // Priority 3: Search by year
+    const yearSuggestions = generateYearSuggestions(queryLower, carsData);
+    suggestions.push(...yearSuggestions);
+
+    // Priority 4: Check for specific vehicle matches
     const vehicleSuggestions = generateVehicleSuggestions(queryLower, carsData);
     suggestions.push(...vehicleSuggestions);
+
+    // Priority 5: Check if query is a number or price-related
+    const numericValue = parseNumericValue(query);
+    if (numericValue !== null && suggestions.length < 5) {
+      const priceSuggestions = generatePriceSuggestions(numericValue, carsData);
+      suggestions.push(...priceSuggestions);
+    }
 
     // Remove duplicates and return
     return suggestions.filter((suggestion, index, self) => 
@@ -133,6 +130,51 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
         action: () => navigateToCatalogueWithPrice(price),
         highlight: query => highlightText(`Cars around ₹${formatPrice(price)}`, query)
       });
+    }
+
+    return suggestions;
+  };
+
+  const generateCompanySuggestions = (query, carsData) => {
+    const suggestions = [];
+    const companies = [...new Set(carsData.map(car => car.brand))];
+    
+    const matchingCompanies = companies.filter(company => 
+      company.toLowerCase().includes(query)
+    );
+
+    matchingCompanies.forEach(company => {
+      const carsOfCompany = carsData.filter(car => car.brand === company);
+      suggestions.push({
+        type: 'company',
+        text: `${company} vehicles`,
+        subtitle: `${carsOfCompany.length} vehicles available`,
+        action: () => navigateToCatalogueWithModel(company),
+        highlight: query => highlightText(`${company} vehicles`, query)
+      });
+    });
+
+    return suggestions;
+  };
+
+  const generateYearSuggestions = (query, carsData) => {
+    const suggestions = [];
+    
+    // Extract year from query if it's a 4-digit number
+    const yearMatch = query.match(/\b(19|20)\d{2}\b/);
+    if (yearMatch) {
+      const year = yearMatch[0];
+      const carsOfYear = carsData.filter(car => car.year === year);
+      
+      if (carsOfYear.length > 0) {
+        suggestions.push({
+          type: 'year',
+          text: `${year} vehicles`,
+          subtitle: `${carsOfYear.length} vehicles available`,
+          action: () => navigateToCatalogueWithYear(year),
+          highlight: query => highlightText(`${year} vehicles`, query)
+        });
+      }
     }
 
     return suggestions;
@@ -186,14 +228,16 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
     const suggestions = [];
     
     const matchingCars = carsData.filter(car => 
-      car.title.toLowerCase().includes(query)
+      car.title.toLowerCase().includes(query) ||
+      car.brand.toLowerCase().includes(query) ||
+      car.model?.toLowerCase().includes(query)
     );
 
-    matchingCars.slice(0, 3).forEach(car => {
+    matchingCars.slice(0, 5).forEach(car => {
       suggestions.push({
         type: 'vehicle',
         text: car.title,
-        subtitle: `${car.location} • ₹${car.price}`,
+        subtitle: `${car.location} • ${car.price}`,
         action: () => navigateToVehicle(car.id),
         highlight: query => highlightText(car.title, query)
       });
@@ -241,6 +285,11 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
     onClose();
   };
 
+  const navigateToCatalogueWithYear = (year) => {
+    navigate(`/catalogue?year=${year}`);
+    onClose();
+  };
+
   const navigateToVehicle = (vehicleId) => {
     navigate(`/vehicle/${vehicleId}`);
     onClose();
@@ -256,8 +305,56 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
     return null;
   }
 
+  // Show loading state if no cars loaded yet
+  if (cars.length === 0) {
+    return (
+      <div 
+        className="dynamic-search-dropdown" 
+        ref={searchRef}
+        style={{
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          right: 0,
+          background: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+          zIndex: 9999,
+          marginTop: '8px',
+          maxHeight: '400px',
+          overflowY: 'auto',
+          border: '1px solid #e5e7eb',
+          display: 'block'
+        }}
+      >
+        <div className="search-loading">
+          <div className="search-spinner"></div>
+          <span>Loading vehicles...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="dynamic-search-dropdown" ref={searchRef}>
+    <div 
+      className="dynamic-search-dropdown" 
+      ref={searchRef}
+      style={{
+        position: 'absolute',
+        top: '100%',
+        left: 0,
+        right: 0,
+        background: 'white',
+        borderRadius: '12px',
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+        zIndex: 9999,
+        marginTop: '8px',
+        maxHeight: '400px',
+        overflowY: 'auto',
+        border: '1px solid #e5e7eb',
+        display: 'block'
+      }}
+    >
       {loading ? (
         <div className="search-loading">
           <div className="search-spinner"></div>
@@ -276,6 +373,8 @@ const DynamicSearch = ({ searchText, setSearchText, onClose }) => {
                   suggestion.type === 'vehicle' ? 'fa-car' :
                   suggestion.type === 'location' ? 'fa-map-marker-alt' :
                   suggestion.type === 'model' ? 'fa-tags' :
+                  suggestion.type === 'company' ? 'fa-building' :
+                  suggestion.type === 'year' ? 'fa-calendar-alt' :
                   'fa-rupee-sign'
                 }`}></i>
               </div>

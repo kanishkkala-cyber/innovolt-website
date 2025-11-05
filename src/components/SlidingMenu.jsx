@@ -21,6 +21,7 @@ const SlidingMenu = ({ open, onClose }) => {
           <li><Link to="/catalogue" onClick={onClose}><i className="fas fa-car"></i> Buy Car</Link></li>
           <li><a href="#how-it-works" onClick={onClose}><i className="fas fa-info-circle"></i> How does it work</a></li>
           <li><Link to="/about" onClick={onClose}><i className="fas fa-building"></i> About Us</Link></li>
+          <li><Link to="/blog" onClick={onClose}><i className="fas fa-blog"></i> Blog</Link></li>
           <li><Link to="/contact" onClick={onClose}><i className="fas fa-envelope"></i> Contact us</Link></li>
         </ul>
         

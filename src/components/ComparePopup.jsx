@@ -15,7 +15,6 @@ const ComparePopup = ({ open, onClose, onCompare }) => {
         const cars = await apiService.getCars();
         setAllCars(cars);
       } catch (error) {
-        console.error('Error fetching cars for comparison:', error);
         // Fallback to local data
         setAllCars(carData);
       }

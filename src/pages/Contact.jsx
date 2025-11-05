@@ -6,8 +6,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    city: '',
-    message: ''
+    city: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -27,8 +26,8 @@ const Contact = () => {
 
     try {
       const response = await apiService.submitContact(formData);
-      setSubmitStatus({ type: 'success', message: response.message });
-          setFormData({ name: '', phone: '', city: '', message: '' });
+      setSubmitStatus({ type: 'success', message: 'Thank you! Your message has been submitted successfully. We will get back to you soon.' });
+      setFormData({ name: '', phone: '', city: '' });
     } catch (error) {
       setSubmitStatus({ 
         type: 'error', 
@@ -111,12 +110,6 @@ const Contact = () => {
               <div className="form-card">
                 <h2 className="form-heading">Get in touch</h2>
                 <form className="contact-form" onSubmit={handleSubmit}>
-                  {submitStatus && (
-                    <div className={`submit-status ${submitStatus.type}`}>
-                      {submitStatus.message}
-                    </div>
-                  )}
-                  
                   <div className="form-group">
                     <input
                       type="text"
@@ -153,24 +146,29 @@ const Contact = () => {
                     />
                   </div>
                   
-                  <div className="form-group">
-                    <textarea
-                      name="message"
-                      className="form-input form-textarea"
-                      placeholder="Enter Message"
-                      rows="4"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                    ></textarea>
-                  </div>
+                  {submitStatus && (
+                    <div className={`submit-status ${submitStatus.type}`} style={{
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      marginBottom: '16px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      backgroundColor: submitStatus.type === 'success' ? '#d4edda' : '#f8d7da',
+                      color: submitStatus.type === 'success' ? '#155724' : '#721c24',
+                      border: `1px solid ${submitStatus.type === 'success' ? '#c3e6cb' : '#f5c6cb'}`
+                    }}>
+                      <i className={`fas ${submitStatus.type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`} style={{ marginRight: '8px' }}></i>
+                      {submitStatus.message}
+                    </div>
+                  )}
                   
                   <button 
                     type="submit" 
                     className="submit-btn"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || (submitStatus && submitStatus.type === 'success')}
                   >
-                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                    {isSubmitting ? 'Submitting...' : (submitStatus && submitStatus.type === 'success') ? 'Submitted!' : 'Submit'}
                   </button>
                   <p className="legal-text">
                     By contacting us you agree to the{' '}

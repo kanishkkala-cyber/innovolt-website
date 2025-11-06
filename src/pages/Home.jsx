@@ -166,16 +166,42 @@ const Home = () => {
     }
   ];
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Desktop banner image URL
+  const desktopBannerUrl = "https://www.innovolt.in/_next/image?url=https%3A%2F%2Fassets.turnoclub.com%2Fdeveloper%2Foffer-turno-images%2FS3%2Finnovolt%2Fbanner_innovolt2.webp&w=1080&q=75";
+  
+  // Mobile banner image URL - same image as desktop
+  const mobileBannerUrl = "https://www.innovolt.in/_next/image?url=https%3A%2F%2Fassets.turnoclub.com%2Fdeveloper%2Foffer-turno-images%2FS3%2Finnovolt%2Fbanner_innovolt2.webp&w=1080&q=75";
+
   return (
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-background">
           <div className="innovolt-banner-image">
+            {/* Desktop Image */}
             <img 
-              src="https://www.innovolt.in/_next/image?url=https%3A%2F%2Fassets.turnoclub.com%2Fdeveloper%2Foffer-turno-images%2FS3%2Finnovolt%2Fbanner_innovolt2.webp&w=1080&q=75" 
+              src={desktopBannerUrl}
               alt="Innovolt Banner" 
-              className="banner-img" 
+              className="banner-img banner-img-desktop" 
+            />
+            {/* Mobile Image */}
+            <img 
+              src={mobileBannerUrl}
+              alt="Innovolt Banner" 
+              className="banner-img banner-img-mobile" 
             />
           </div>
         </div>

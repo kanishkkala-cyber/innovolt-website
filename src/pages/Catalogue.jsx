@@ -23,6 +23,7 @@ const Catalogue = () => {
   const [loading, setLoading] = useState(true);
   const [filterLoading, setFilterLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   // Sort options for the dropdown
   const sortOptions = [
@@ -269,13 +270,48 @@ const Catalogue = () => {
   return (
     <main className="catalogue-main">
       <div className="catalogue-container">
+        {/* Mobile Filter Button - Shows on top on mobile */}
+        <button 
+          className="mobile-filter-toggle"
+          onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+          type="button"
+        >
+          <i className="fas fa-filter"></i>
+          <span>Filters</span>
+          {(() => {
+            const activeFilters = 
+              selectedLocation.length + 
+              (selectedModels.includes('all') ? 0 : selectedModels.length) + 
+              (budgetRange.min !== priceRange.min || budgetRange.max !== priceRange.max ? 1 : 0) + 
+              (yearRange.min !== yearRangeData.min || yearRange.max !== yearRangeData.max ? 1 : 0);
+            return activeFilters > 0 ? (
+              <span className="filter-badge">{activeFilters}</span>
+            ) : null;
+          })()}
+        </button>
+
+        {/* Mobile Filter Overlay */}
+        <div 
+          className={`mobile-filter-overlay ${mobileFiltersOpen ? 'active' : ''}`}
+          onClick={() => setMobileFiltersOpen(false)}
+        ></div>
+
         {/* Left Sidebar - Filters */}
-        <aside className="filters-sidebar">
+        <aside className={`filters-sidebar ${mobileFiltersOpen ? 'mobile-open' : ''}`}>
           <div className="filters-header">
             <h3>Filters</h3>
-            <button className="clear-filters-btn" onClick={handleClearFilters}>
-              Clear All
-            </button>
+            <div className="filters-header-actions">
+              <button className="clear-filters-btn" onClick={handleClearFilters}>
+                Clear All
+              </button>
+              <button 
+                className="mobile-filter-close"
+                onClick={() => setMobileFiltersOpen(false)}
+                type="button"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
           </div>
 
           {/* Budget Filter */}

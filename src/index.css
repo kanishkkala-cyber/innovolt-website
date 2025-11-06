@@ -38,6 +38,7 @@ body {
   top: 80px;
   right: 20px;
   width: 320px;
+  max-width: calc(100vw - 24px);
   background: white;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
@@ -47,6 +48,7 @@ body {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .call-popup-dropdown.active {
@@ -249,8 +251,37 @@ body {
 /* Responsive Design */
 @media (max-width: 640px) {
   .call-popup-dropdown {
-    width: 260px;
-    right: -20px;
+    width: calc(100vw - 24px) !important;
+    max-width: 320px !important;
+    right: 12px !important;
+    left: auto !important;
+    top: 70px;
+  }
+  
+  .popup-content {
+    padding: 20px 16px;
+  }
+  
+  .popup-header {
+    padding: 10px 14px;
+  }
+  
+  .popup-header h4 {
+    font-size: 14px;
+  }
+  
+  .popup-label {
+    font-size: 13px;
+  }
+  
+  .popup-input {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .popup-submit-btn {
+    padding: 12px 20px;
+    font-size: 14px;
   }
 }
 

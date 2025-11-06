@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useGlobal } from '../contexts/GlobalContext';
-import { carData } from '../data/carData';
 import apiService from '../services/api';
 
 const ComparisonResultsPopup = ({ open, onClose, onBack }) => {
@@ -16,8 +15,9 @@ const ComparisonResultsPopup = ({ open, onClose, onBack }) => {
         const cars = await apiService.getCars();
         setAllCars(cars);
       } catch (error) {
-        // Fallback to local data
-        setAllCars(carData);
+        console.error('Failed to fetch cars:', error);
+        // Show empty array instead of dummy data
+        setAllCars([]);
       }
     };
 

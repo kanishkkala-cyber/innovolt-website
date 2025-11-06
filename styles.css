@@ -173,12 +173,6 @@ section > .content-wrapper {
     flex: 0 0 auto;
 }
 
-/* Center - Search Bar */
-.header .container .search-bar {
-    flex: 1;
-    max-width: 500px;
-    margin: 0 20px;
-}
 
 /* Right side - Action Buttons and Icons */
 .header .container .action-buttons {
@@ -287,46 +281,6 @@ section > .content-wrapper {
     transform: translateY(1px);
 }
 
-/* Search Bar */
-.search-bar {
-    display: none; /* Completely remove search bar */
-}
-
-.search-input-group {
-    position: relative;
-    display: flex;
-    align-items: center;
-    z-index: 1000;
-}
-
-.search-icon {
-    position: absolute;
-    left: 18px;
-    color: #ff0000;
-    font-size: 16px;
-    z-index: 2;
-}
-
-.search-input {
-    width: 100%;
-    padding: 14px 20px 14px 50px;
-    border: 1px solid #e5e7eb;
-    border-radius: 25px;
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.3s ease;
-    background: white;
-    box-shadow: none;
-}
-
-.search-input:focus {
-    border-color: #ff0000;
-    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.1);
-}
-
-.search-input:focus + .search-placeholder {
-    opacity: 0;
-}
 
 
 
@@ -353,22 +307,6 @@ section > .content-wrapper {
     }
 }
 
-.search-placeholder {
-    position: absolute;
-    left: 50px;
-    right: 20px;
-    color: #9ca3af;
-    font-size: 15px;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    height: 20px;
-    overflow: hidden;
-    white-space: nowrap;
-}
 
 .placeholder-text {
     color: #9ca3af;
@@ -5508,10 +5446,6 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         display: none;
     }
     
-    .search-bar {
-        display: none;
-    }
-    
     .action-buttons {
         gap: 4px;
         flex-wrap: nowrap;
@@ -5563,10 +5497,6 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     }
     
     .header-nav {
-        display: none;
-    }
-    
-    .search-bar {
         display: none;
     }
     
@@ -5682,25 +5612,6 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         font-size: 12px;
     }
     
-    .search-input-group {
-        width: 100%;
-        position: relative;
-    }
-    
-    .search-input {
-        font-size: 12px;
-        padding: 6px 10px 6px 35px;
-        width: 100%;
-    }
-    
-    .search-placeholder {
-        left: 35px;
-        right: 10px;
-        font-size: 11px;
-        height: 14px;
-        overflow: hidden;
-    }
-    
     .rotating-text {
         min-width: 40px;
         height: 14px;
@@ -5767,23 +5678,6 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         gap: 4px;
     }
     
-    .search-bar {
-        max-width: 140px;
-        min-width: 100px;
-        margin: 0 4px;
-    }
-    
-    .search-input {
-        font-size: 11px;
-        padding: 5px 8px 5px 30px;
-    }
-    
-    .search-placeholder {
-        left: 30px;
-        right: 8px;
-        font-size: 10px;
-        height: 12px;
-    }
     
     .rotating-text {
         min-width: 35px;
@@ -6705,16 +6599,6 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         font-size: 12px;
     }
     
-    .search-bar {
-        min-width: 120px;
-        max-width: 150px;
-    }
-    
-    .search-placeholder {
-        left: 35px;
-        right: 8px;
-        font-size: 11px;
-    }
     
     .rotating-text {
         min-width: 40px;
@@ -8522,148 +8406,6 @@ body.vehicle-page input[type="phone"]:not(#bookPhone) {
     margin: 0;
 }
 
-/* Dynamic Search Dropdown Styles */
-.dynamic-search-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
-    margin-top: 8px;
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid #e5e7eb;
-    display: block;
-}
-
-.search-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    color: #6b7280;
-    gap: 10px;
-}
-
-.search-spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e5e7eb;
-    border-top: 2px solid #EF4444;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.search-suggestions {
-    padding: 8px 0;
-}
-
-.search-suggestion-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    border-bottom: 1px solid #f3f4f6;
-}
-
-.search-suggestion-item:last-child {
-    border-bottom: none;
-}
-
-.search-suggestion-item:hover {
-    background-color: #f8f9fa;
-}
-
-.suggestion-icon {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f3f4f6;
-    border-radius: 8px;
-    margin-right: 12px;
-    flex-shrink: 0;
-}
-
-.suggestion-icon i {
-    color: #EF4444;
-    font-size: 14px;
-}
-
-.suggestion-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.suggestion-text {
-    font-weight: 600;
-    color: #1f2937;
-    font-size: 14px;
-    margin-bottom: 2px;
-}
-
-.suggestion-subtitle {
-    font-size: 12px;
-    color: #6b7280;
-}
-
-.suggestion-arrow {
-    color: #9ca3af;
-    font-size: 12px;
-    margin-left: 8px;
-}
-
-.search-highlight {
-    background-color: #fef3c7;
-    color: #92400e;
-    font-weight: 700;
-}
-
-.search-no-results {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    color: #6b7280;
-}
-
-.no-results-icon {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f3f4f6;
-    border-radius: 8px;
-    margin-right: 12px;
-    flex-shrink: 0;
-}
-
-.no-results-icon i {
-    color: #9ca3af;
-    font-size: 14px;
-}
-
-.no-results-text {
-    font-weight: 600;
-    color: #1f2937;
-    font-size: 14px;
-    margin-bottom: 2px;
-}
-
-.no-results-subtitle {
-    font-size: 12px;
-    color: #6b7280;
-}
 
 /* Blog Page Styles */
 .blog-page {

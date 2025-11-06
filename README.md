@@ -61,8 +61,6 @@ innovolt-website/
 │   │   └── GlobalContext.jsx
 │   ├── services/                 # API services
 │   │   └── api.js
-│   ├── data/                     # Static data
-│   │   └── carData.js
 │   └── App.jsx                   # Main app component
 ├── backend/                      # Node.js backend
 │   ├── routes/                   # API routes

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
-import SupabaseTest from './components/SupabaseTest';
 import Home from './pages/Home';
 import Catalogue from './pages/Catalogue';
 import Vehicle from './pages/Vehicle';
@@ -30,7 +29,6 @@ function App() {
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/refund" element={<Refund />} />
-              <Route path="/test-supabase" element={<SupabaseTest />} />
             </Routes>
         <Footer />
       </div>

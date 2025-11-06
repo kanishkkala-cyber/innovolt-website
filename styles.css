@@ -7,6 +7,9 @@
 
 html {
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 /* Prevent horizontal overflow for specific elements */
@@ -21,9 +24,14 @@ body {
     color: #333;
     background-color: #f8f9fa;
     padding-top: 80px;
+    padding-left: 0;
+    padding-right: 0;
     overflow-x: hidden;
     margin: 0;
     min-height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 /* App Container */
@@ -31,12 +39,74 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
+/* Standardized Container - Consistent across all pages */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Content Wrapper - For page content sections */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Standard Section Spacing - Consistent across all pages */
+section {
+    padding: 60px 0;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Prevent content from touching edges */
+section > .container,
+section > .content-wrapper {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Page Main Containers - Consistent base */
+.home-page,
+.about-main,
+.contact-main,
+.vehicle-main,
+.catalogue-main,
+.blog-main,
+.terms-main,
+.privacy-main,
+.refund-main {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    position: relative;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Ensure home-page doesn't add padding to hero section */
+.home-page > .hero-section {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
 }
 
 /* Header Styles */
@@ -136,7 +206,7 @@ body {
     margin-left: 6px;
 }
 
-/* Menu Button */
+/* Menu Button - Hidden on desktop when nav is visible */
 .menu-btn {
     background: none;
     border: none;
@@ -147,6 +217,7 @@ body {
     border-radius: 4px;
     transition: background-color 0.3s ease;
     flex-shrink: 0;
+    display: none; /* Hidden by default on desktop */
 }
 
 .menu-btn:hover {
@@ -474,6 +545,9 @@ body {
     font-size: 11px;
     font-weight: 600;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .action-icon-btn:hover {
@@ -968,6 +1042,1250 @@ body {
     color: #374151;
 }
 
+/* Location Popup - Mobile Responsive */
+@media (max-width: 768px) {
+    .location-popup {
+        width: 95%;
+        max-width: none;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .location-popup-header {
+        padding: 16px 20px;
+    }
+
+    .location-popup-header h3 {
+        font-size: 18px;
+    }
+
+    .cities-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .city-item {
+        padding: 20px 16px;
+    }
+
+    .city-icon {
+        width: 55px;
+        height: 55px;
+        margin-bottom: 10px;
+    }
+
+    .city-name {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .location-popup {
+        width: 100%;
+        max-width: none;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        top: 0;
+        left: 0;
+        transform: none;
+    }
+
+    .location-popup-header {
+        padding: 14px 16px;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 1;
+    }
+
+    .location-popup-header h3 {
+        font-size: 16px;
+    }
+
+    .popup-close {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .cities-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .city-item {
+        padding: 16px;
+        flex-direction: row;
+        text-align: left;
+        gap: 12px;
+    }
+
+    .city-icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .city-name {
+        font-size: 14px;
+        flex: 1;
+    }
+
+    .city-icon-fallback i {
+        font-size: 18px;
+    }
+}
+
+/* ============================================
+   COMPREHENSIVE MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+/* Hero Section - Mobile */
+@media (max-width: 768px) {
+    .hero-section {
+        height: calc(100vh - 60px);
+        min-height: 400px;
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
+    
+    .hero-background {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
+    
+    .innovolt-banner-image {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        box-sizing: border-box;
+    }
+    
+    .banner-img {
+        width: 100% !important;
+        max-width: 100% !important;
+        object-position: center;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        height: calc(100vh - 60px);
+        min-height: 300px;
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
+    
+    .hero-background {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
+    
+    .innovolt-banner-image {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        box-sizing: border-box;
+    }
+    
+    .banner-img {
+        width: 100% !important;
+        max-width: 100% !important;
+        object-position: center top;
+        padding: 0 !important;
+        margin: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box;
+    }
+}
+
+/* Car Widgets Section - Mobile */
+@media (max-width: 768px) {
+    .car-widgets-section {
+        padding: 40px 0;
+    }
+    
+    .car-widgets-section .container {
+        padding: 0 16px;
+    }
+    
+    .car-widgets-heading {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    
+    .car-widgets-header {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    
+    .view-catalogue-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .car-slider-wrapper {
+        margin: 0 40px;
+        width: calc(100% - 80px);
+    }
+    
+    .slider-nav-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+    }
+    
+    .slider-prev {
+        left: 5px;
+    }
+    
+    .slider-next {
+        right: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .car-widgets-section {
+        padding: 30px 0;
+    }
+    
+    .car-widgets-section .container {
+        padding: 0 12px;
+    }
+    
+    .car-widgets-heading {
+        font-size: 1.75rem;
+    }
+    
+    .car-widgets-header {
+        margin-bottom: 20px;
+    }
+    
+    .view-catalogue-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+    
+    .car-slider-wrapper {
+        margin: 0 35px;
+        width: calc(100% - 70px);
+    }
+    
+    .slider-nav-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+}
+
+/* Benefits Section - Mobile */
+@media (max-width: 768px) {
+    .benefits-section {
+        padding: 40px 0;
+    }
+    
+    .benefits-section .container {
+        padding: 0 16px;
+    }
+    
+    .benefits-heading {
+        font-size: 1.8rem;
+        margin-bottom: 24px;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+    
+    .benefit-card {
+        padding: 16px 12px;
+    }
+    
+    .benefit-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .icon-badge {
+        width: 18px;
+        height: 18px;
+        font-size: 0.55rem;
+        top: -5px;
+        right: -5px;
+    }
+    
+    .benefit-title {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+    
+    .benefit-description {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+    
+    .view-cars-btn {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .benefits-section {
+        padding: 24px 0;
+    }
+    
+    .benefits-section .container {
+        padding: 0 12px;
+    }
+    
+    .benefits-heading {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+    
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .benefit-card {
+        padding: 10px 6px !important;
+        min-height: auto;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .benefit-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    .icon-badge {
+        width: 14px;
+        height: 14px;
+        font-size: 0.45rem;
+        top: -3px;
+        right: -3px;
+    }
+    
+    .benefit-title {
+        font-size: 0.7rem !important;
+        margin-bottom: 4px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .benefit-description {
+        font-size: 0.6rem !important;
+        line-height: 1.3;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .view-cars-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Very small screens (320px) - ensure all 4 cards fit */
+@media (max-width: 360px) {
+    .benefits-section {
+        padding: 20px 8px;
+    }
+    
+    .benefits-heading {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .benefits-grid {
+        gap: 8px;
+    }
+    
+    .benefit-card {
+        padding: 10px 6px;
+    }
+    
+    .benefit-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    .benefit-title {
+        font-size: 0.7rem;
+    }
+    
+    .benefit-description {
+        font-size: 0.6rem;
+    }
+}
+
+/* Landscape orientation for mobile */
+@media (max-width: 480px) and (orientation: landscape) {
+    .benefits-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    
+    .benefit-card {
+        padding: 10px 6px;
+    }
+    
+    .benefit-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    .benefit-title {
+        font-size: 0.7rem;
+        margin-bottom: 4px;
+    }
+    
+    .benefit-description {
+        font-size: 0.6rem;
+    }
+}
+
+/* How It Works Section - Mobile */
+@media (max-width: 768px) {
+    .how-it-works-section {
+        padding: 40px 0;
+    }
+    
+    .how-it-works-section .container {
+        padding: 0 16px;
+    }
+    
+    .how-it-works-heading {
+        font-size: 1.8rem;
+        margin-bottom: 24px;
+    }
+    
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .step-card {
+        padding: 18px 14px;
+    }
+    
+    .step-number {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+        top: -10px;
+        left: 12px;
+    }
+    
+    .step-content {
+        margin-top: 12px;
+    }
+    
+    .step-title {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+    
+    .step-description {
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 480px) {
+    .how-it-works-section {
+        padding: 24px 0;
+    }
+    
+    .how-it-works-section .container {
+        padding: 0 12px;
+    }
+    
+    .how-it-works-heading {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+    }
+    
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .step-card {
+        padding: 12px 8px !important;
+        min-height: auto;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    .step-number {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+        top: -5px;
+        left: 6px;
+    }
+    
+    .step-content {
+        margin-top: 6px;
+    }
+    
+    .step-title {
+        font-size: 0.7rem !important;
+        margin-bottom: 4px;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+    
+    .step-description {
+        font-size: 0.6rem !important;
+        line-height: 1.3;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+}
+
+/* Very small screens (320px) - ensure all 4 steps fit */
+@media (max-width: 360px) {
+    .how-it-works-section {
+        padding: 20px 8px;
+    }
+    
+    .how-it-works-heading {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .steps-grid {
+        gap: 8px;
+    }
+    
+    .step-card {
+        padding: 12px 8px;
+    }
+    
+    .step-number {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+        top: -5px;
+        left: 6px;
+    }
+    
+    .step-title {
+        font-size: 0.7rem;
+    }
+    
+    .step-description {
+        font-size: 0.6rem;
+    }
+}
+
+/* Landscape orientation for mobile */
+@media (max-width: 480px) and (orientation: landscape) {
+    .steps-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    
+    .step-card {
+        padding: 10px 8px;
+    }
+    
+    .step-number {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+        top: -5px;
+        left: 6px;
+    }
+    
+    .step-title {
+        font-size: 0.7rem;
+        margin-bottom: 4px;
+    }
+    
+    .step-description {
+        font-size: 0.6rem;
+    }
+}
+
+/* Cars Across India Section - Mobile */
+@media (max-width: 768px) {
+    .cars-india-section {
+        padding: 50px 0;
+    }
+    
+    .cars-india-section .container {
+        padding: 0 16px;
+    }
+    
+    .cars-india-heading {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    
+    .cities-slider-container {
+        margin: 30px 0;
+    }
+    
+    .cities-slider-wrapper {
+        margin: 0 40px;
+    }
+    
+    .cities-slider-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+    }
+    
+    .cities-slider-prev {
+        left: 5px;
+    }
+    
+    .cities-slider-next {
+        right: 5px;
+    }
+    
+    .city-card {
+        flex: 0 0 220px;
+        height: 140px;
+    }
+    
+    .city-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .city-name {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cars-india-section {
+        padding: 40px 0;
+    }
+    
+    .cars-india-section .container {
+        padding: 0 12px;
+    }
+    
+    .cars-india-heading {
+        font-size: 1.75rem;
+        margin-bottom: 20px;
+    }
+    
+    .cities-slider-container {
+        margin: 20px 0;
+    }
+    
+    .cities-slider-wrapper {
+        margin: 0 35px;
+    }
+    
+    .cities-slider-nav {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+    
+    .city-card {
+        flex: 0 0 180px;
+        height: 120px;
+    }
+    
+    .city-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+    
+    .city-name {
+        font-size: 14px;
+    }
+}
+
+/* FAQ Section - Mobile */
+@media (max-width: 768px) {
+    .faq-section {
+        padding: 50px 0;
+    }
+    
+    .faq-section .container {
+        padding: 0 16px;
+    }
+    
+    .faq-heading {
+        font-size: 2rem;
+        margin-bottom: 40px;
+    }
+    
+    .faq-container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .faq-question {
+        padding: 18px 20px;
+        font-size: 0.95rem;
+    }
+    
+    .faq-answer.active {
+        padding: 18px 20px 20px 20px;
+    }
+    
+    .faq-answer p {
+        font-size: 0.95rem;
+        padding: 12px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .faq-section {
+        padding: 40px 0;
+    }
+    
+    .faq-section .container {
+        padding: 0 12px;
+    }
+    
+    .faq-heading {
+        font-size: 1.75rem;
+        margin-bottom: 30px;
+    }
+    
+    .faq-item {
+        margin-bottom: 15px;
+    }
+    
+    .faq-question {
+        padding: 16px 18px;
+        font-size: 0.9rem;
+    }
+    
+    .faq-icon {
+        font-size: 0.9rem;
+        margin-left: 12px;
+    }
+    
+    .faq-answer.active {
+        padding: 16px 18px 18px 18px;
+    }
+    
+    .faq-answer p {
+        font-size: 0.9rem;
+        padding: 10px 14px;
+    }
+}
+
+/* Container - Mobile */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+}
+
+/* Car Widget - Mobile */
+@media (max-width: 768px) {
+    .car-widgets-section .car-widget {
+        width: 260px;
+        height: 280px;
+    }
+    
+    .car-widgets-section .car-image-container {
+        height: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    .car-widgets-section .car-widget {
+        width: 100%;
+        max-width: 240px;
+        height: 260px;
+    }
+    
+    .car-widgets-section .car-image-container {
+        height: 120px;
+    }
+    
+    /* Make car widget content smaller on mobile */
+    .car-widgets-section .car-widget .car-details {
+        padding: 12px;
+    }
+    
+    .car-widgets-section .car-widget .car-title {
+        font-size: 14px;
+        margin-bottom: 6px;
+        line-height: 1.3;
+    }
+    
+    .car-widgets-section .car-widget .current-price {
+        font-size: 16px;
+    }
+    
+    .car-widgets-section .car-widget .emi-text {
+        font-size: 11px;
+    }
+    
+    .car-widgets-section .car-widget .spec-tag {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    
+    .car-widgets-section .car-widget .car-location {
+        font-size: 11px;
+        margin-top: 8px;
+    }
+}
+
+/* Catalogue Page - Enhanced Mobile */
+@media (max-width: 768px) {
+    .catalogue-main {
+        height: auto;
+        min-height: calc(100vh - 80px);
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+    }
+    
+    .catalogue-container {
+        padding: 0 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .filters-sidebar {
+        padding: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .filters-header h3 {
+        font-size: 16px;
+    }
+    
+    .cars-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .cars-grid .car-widget {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    .catalogue-content {
+        padding: 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .results-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .results-count {
+        width: 100%;
+    }
+    
+    .results-count h2 {
+        font-size: 18px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.3;
+    }
+    
+    .sort-options {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .catalogue-main {
+        padding: 10px 0;
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+    }
+    
+    .catalogue-container {
+        padding: 0 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .filters-sidebar {
+        padding: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .filters-header {
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+    }
+    
+    .filters-header h3 {
+        font-size: 14px;
+    }
+    
+    .filter-section {
+        margin-bottom: 20px;
+    }
+    
+    .filter-title {
+        font-size: 13px;
+    }
+    
+    .cars-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .cars-grid .car-widget {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    
+    .catalogue-content {
+        padding: 8px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .results-header {
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .results-count {
+        width: 100%;
+    }
+    
+    .results-count h2 {
+        font-size: 16px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.3;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .sort-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .sort-options label {
+        font-size: 13px;
+    }
+    
+    .sort-options select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* Vehicle Page - Enhanced Mobile */
+@media (max-width: 768px) {
+    .vehicle-container {
+        padding: 12px 15px;
+    }
+    
+    .breadcrumb-container {
+        padding: 8px 0;
+    }
+    
+    .vehicle-gallery {
+        margin-bottom: 30px;
+    }
+    
+    .vehicle-info h1 {
+        font-size: 24px;
+    }
+    
+    .vehicle-price {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vehicle-container {
+        padding: 10px 12px;
+    }
+    
+    .breadcrumb-container {
+        padding: 6px 0;
+    }
+    
+    .vehicle-info h1 {
+        font-size: 20px;
+    }
+    
+    .vehicle-price {
+        font-size: 24px;
+    }
+    
+    .car-overview-widget,
+    .car-specs-widget {
+        margin: 12px 8px;
+    }
+}
+
+/* Contact Page - Mobile */
+@media (max-width: 768px) {
+    .contact-main {
+        padding-top: 0;
+        min-height: auto;
+    }
+    
+    .contact-support-section {
+        padding: 40px 0;
+    }
+    
+    .contact-layout {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .address-section,
+    .support-section {
+        padding: 30px 20px;
+    }
+    
+    .map-container iframe {
+        height: 400px;
+    }
+    
+    /* Ensure form is visible and properly sized */
+    .form-heading {
+        font-size: 1.8rem;
+        margin-bottom: 24px;
+    }
+    
+    .form-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-main {
+        padding-top: 0;
+    }
+    
+    .contact-support-section {
+        padding: 30px 0;
+    }
+    
+    .address-section,
+    .support-section {
+        padding: 20px 16px;
+    }
+    
+    .address-heading,
+    .support-heading {
+        font-size: 1.1rem;
+    }
+    
+    .address-text,
+    .support-text {
+        font-size: 0.9rem;
+    }
+    
+    .map-container iframe {
+        height: 300px;
+    }
+    
+    /* Form optimizations for small screens */
+    .form-card {
+        padding: 20px;
+        margin: 0;
+    }
+    
+    .form-heading {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .form-input {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 12px 16px;
+    }
+    
+    .submit-btn {
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+}
+
+/* Footer - Enhanced Mobile */
+@media (max-width: 768px) {
+    .footer-container {
+        padding: 40px 20px 20px;
+    }
+    
+    .footer-sections {
+        gap: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        padding: 30px 15px 15px;
+    }
+    
+    .footer-sections {
+        gap: 25px;
+    }
+    
+    .footer-section h3 {
+        font-size: 16px;
+    }
+    
+    .footer-section a,
+    .footer-section p {
+        font-size: 14px;
+    }
+    
+    .contact-btn {
+        min-width: auto;
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Body Padding - Mobile */
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 60px;
+    }
+}
+
 /* Compare Popup */
 .compare-popup-overlay {
     position: fixed;
@@ -996,7 +2314,7 @@ body {
     border-radius: 20px;
     padding: 30px;
     max-width: 1000px;
-    width: 95vw;
+    width: 90vw;
     max-height: 85vh;
     overflow-y: auto;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -1004,6 +2322,7 @@ body {
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 401;
+    box-sizing: border-box;
 }
 
 .compare-popup-overlay.active .compare-popup {
@@ -1051,11 +2370,57 @@ body {
 .compare-vehicles-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 2px;
+    gap: 12px;
     margin-bottom: 20px;
-    max-height: 200px;
-    overflow-y: auto;
-    padding: 2px;
+    padding: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Smaller car widgets in compare popup */
+.compare-vehicles-container .car-widget {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 200px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.compare-vehicles-container .car-image-container {
+    height: 100px !important;
+}
+
+.compare-vehicles-container .car-details {
+    padding: 10px !important;
+}
+
+.compare-vehicles-container .car-title {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+    line-height: 1.2 !important;
+}
+
+.compare-vehicles-container .spec-tag {
+    font-size: 9px !important;
+    padding: 2px 6px !important;
+}
+
+.compare-vehicles-container .emi-text {
+    font-size: 10px !important;
+}
+
+.compare-vehicles-container .current-price {
+    font-size: 13px !important;
+}
+
+.compare-vehicles-container .car-location {
+    font-size: 9px !important;
+    margin-top: 4px !important;
+}
+
+.compare-vehicles-container .car-location i {
+    font-size: 8px !important;
 }
 
 .compare-vehicle-item {
@@ -1195,6 +2560,137 @@ body {
     }
 }
 
+/* Compare Popup - Mobile */
+@media (max-width: 768px) {
+    .compare-popup {
+        width: 90vw !important;
+        max-width: 90vw !important;
+        padding: 20px;
+        border-radius: 16px;
+        max-height: 85vh;
+        box-sizing: border-box;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+    
+    .compare-popup-header {
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+    }
+    
+    .compare-popup-header h3 {
+        font-size: 20px;
+    }
+    
+    .compare-vehicles-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+    
+    .compare-vehicles-container .car-widget {
+        min-height: 180px !important;
+    }
+    
+    .compare-vehicles-container .car-image-container {
+        height: 90px !important;
+    }
+    
+    .compare-vehicles-container .car-details {
+        padding: 8px !important;
+    }
+    
+    .compare-vehicles-container .car-title {
+        font-size: 11px !important;
+    }
+    
+    .compare-now-btn {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .compare-popup {
+        width: 90vw !important;
+        max-width: 90vw !important;
+        max-height: 85vh !important;
+        border-radius: 16px !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        padding: 16px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    
+    .compare-popup-header {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        position: relative;
+        background: transparent;
+        z-index: 1;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .compare-popup-header h3 {
+        font-size: 18px;
+    }
+    
+    .compare-popup-close {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .compare-vehicles-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        margin-bottom: 15px;
+    }
+    
+    .compare-vehicles-container .car-widget {
+        min-height: 160px !important;
+    }
+    
+    .compare-vehicles-container .car-image-container {
+        height: 80px !important;
+    }
+    
+    .compare-vehicles-container .car-details {
+        padding: 6px !important;
+    }
+    
+    .compare-vehicles-container .car-title {
+        font-size: 10px !important;
+        margin-bottom: 4px !important;
+    }
+    
+    .compare-vehicles-container .spec-tag {
+        font-size: 8px !important;
+        padding: 1px 4px !important;
+    }
+    
+    .compare-vehicles-container .emi-text {
+        font-size: 9px !important;
+    }
+    
+    .compare-vehicles-container .current-price {
+        font-size: 11px !important;
+    }
+    
+    .compare-vehicles-container .car-location {
+        font-size: 8px !important;
+    }
+    
+    .compare-now-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        width: 100%;
+    }
+}
+
 /* Main Content */
 .main-content {
     flex: 1;
@@ -1209,12 +2705,17 @@ body {
     overflow: hidden;
     margin: 0;
     padding: 0;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .hero-background {
     position: relative;
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 /* Innovolt Banner Image */
@@ -1225,6 +2726,8 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
+    margin: 0;
+    padding: 0;
 }
 
 .banner-img {
@@ -1232,13 +2735,51 @@ body {
     height: 100%;
     object-fit: cover;
     object-position: center;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+/* Desktop banner - show on larger screens */
+.banner-img-desktop {
+    display: block;
+}
+
+.banner-img-mobile {
+    display: none;
+}
+
+/* Mobile banner - show on smaller screens - same as desktop */
+@media (max-width: 768px) {
+    .banner-img-desktop {
+        display: none;
+    }
+    
+    .banner-img-mobile {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-img-mobile {
+        object-fit: cover;
+        object-position: center;
+    }
 }
 
 
 /* Car Widgets Section */
 .car-widgets-section {
-    padding: 80px 60px;
+    padding: 80px 0;
     background: white;
+}
+
+.car-widgets-section .container {
+    padding: 0 20px;
 }
 
 .car-widgets-heading {
@@ -1782,6 +3323,7 @@ body {
     border-radius: 20px;
     padding: 30px;
     max-width: 95vw;
+    width: 95vw;
     max-height: 85vh;
     overflow-y: auto;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -1789,6 +3331,9 @@ body {
     visibility: hidden;
     transition: all 0.3s ease;
     z-index: 501;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .comparison-results-overlay.active .comparison-results-popup {
@@ -1916,30 +3461,102 @@ body {
     color: #9ca3af;
 }
 
+.comparison-table-container {
+    width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+}
+
+/* Desktop: Try to fit 4 vehicles without scrolling */
+@media (min-width: 1024px) {
+    .comparison-table {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+        min-width: 140px;
+        max-width: 180px;
+    }
+    
+    .comparison-table th:not(:first-child),
+    .comparison-table td:not(:first-child) {
+        min-width: 120px;
+        max-width: 160px;
+        width: auto;
+    }
+}
+
+/* Large screens: Optimize for 4 vehicles */
+@media (min-width: 1200px) {
+    .comparison-results-popup {
+        max-width: 1200px;
+        width: 90vw;
+    }
+    
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+        min-width: 150px;
+        max-width: 200px;
+    }
+    
+    .comparison-table th:not(:first-child),
+    .comparison-table td:not(:first-child) {
+        min-width: 140px;
+        max-width: 180px;
+    }
+}
+
 .comparison-table {
     width: 100%;
+    min-width: 600px;
     border-collapse: collapse;
     margin-top: 20px;
     background: white;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    table-layout: auto;
 }
 
 .comparison-table th {
     background: #EF4444;
     color: white;
-    padding: 15px 12px;
+    padding: 12px 8px;
     text-align: left;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
 .comparison-table td {
-    padding: 12px;
+    padding: 10px 8px;
     border-bottom: 1px solid #e5e7eb;
-    font-size: 14px;
+    font-size: 13px;
     color: #374151;
+    white-space: nowrap;
+}
+
+/* Optimize for 4 vehicles - reduce padding to fit more */
+.comparison-table th:first-child {
+    min-width: 120px;
+    max-width: 150px;
+}
+
+.comparison-table td:first-child {
+    min-width: 120px;
+    max-width: 150px;
+    font-weight: 600;
+}
+
+.comparison-table th:not(:first-child),
+.comparison-table td:not(:first-child) {
+    min-width: 100px;
+    max-width: 140px;
 }
 
 .comparison-table tr:last-child td {
@@ -2095,18 +3712,7 @@ body {
 }
 
 /* Cars Across India Section */
-.cars-india-section {
-    padding: 60px 60px;
-    background: white;
-}
-
-.cars-india-heading {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #1f2937;
-    margin-bottom: 1rem;
-}
+/* Cars Across India Section - Duplicate removed, using standardized version */
 
 .cities-slider-container {
     position: relative;
@@ -2584,12 +4190,12 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
 /* Contact Page Styles */
 .contact-main {
-    height: calc(100vh - 80px);
+    min-height: calc(100vh - 80px);
     background: #f8f9fa;
     margin: 0;
     padding: 0;
     position: relative;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 
 .contact-main::before {
@@ -2853,8 +4459,18 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
 /* Benefits Section */
 .benefits-section {
-    padding: 80px 60px;
+    padding: 80px 0;
     background: #f8f9fa;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+.benefits-section .container {
+    padding: 0 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .benefits-heading {
@@ -2870,6 +4486,9 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     margin-bottom: 50px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .benefit-card {
@@ -2981,8 +4600,18 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
 /* How It Works Section */
 .how-it-works-section {
-    padding: 80px 60px;
+    padding: 80px 0;
     background: white;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
+.how-it-works-section .container {
+    padding: 0 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .how-it-works-heading {
@@ -2997,6 +4626,9 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .step-card {
@@ -3057,8 +4689,12 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
 /* Cars Across India Section */
 .cars-india-section {
-    padding: 80px 60px;
+    padding: 80px 0;
     background: white;
+}
+
+.cars-india-section .container {
+    padding: 0 20px;
 }
 
 .cars-india-heading {
@@ -3225,6 +4861,10 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 .faq-section {
     padding: 80px 0;
     background: #f8f9fa;
+}
+
+.faq-section .container {
+    padding: 0 20px;
 }
 
 .faq-heading {
@@ -3619,7 +5259,19 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 .content-wrapper {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-wrapper {
+        padding: 0 12px;
+    }
 }
 
 .section-heading {
@@ -3647,6 +5299,30 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     margin-bottom: 40px;
 }
 
+.get-in-touch-section .content-wrapper {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .get-in-touch-section {
+        padding: 40px 0;
+    }
+    
+    .get-in-touch-section .content-wrapper {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .get-in-touch-section {
+        padding: 30px 0;
+    }
+    
+    .get-in-touch-section .content-wrapper {
+        padding: 0 12px;
+    }
+}
+
 /* About page contact content - separate from Contact page */
 .about-contact-content {
     display: grid;
@@ -3670,25 +5346,18 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     text-align: center;
     margin-bottom: 60px;
     position: relative;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    background: transparent;
 }
 
+/* Remove decorative lines that were causing issues through the text */
 .get-in-touch-heading::before,
 .get-in-touch-heading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    width: 60px;
-    height: 3px;
-    background: #ff0000;
-    transform: translateY(-50%);
-}
-
-.get-in-touch-heading::before {
-    left: calc(50% - 200px);
-}
-
-.get-in-touch-heading::after {
-    right: calc(50% - 200px);
+    display: none;
 }
 
 .contact-content {
@@ -3774,6 +5443,11 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
 /* Responsive Design */
 @media (min-width: 1025px) {
+    /* Hide menu button on desktop - nav buttons are visible */
+    .menu-btn {
+        display: none !important;
+    }
+    
     .header-nav {
         display: flex;
     }
@@ -3821,7 +5495,16 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         overflow: visible;
     }
     
+    /* Show menu button when nav is hidden */
+    .menu-btn {
+        display: flex !important;
+    }
+    
     .header-center {
+        display: none;
+    }
+    
+    .header-nav {
         display: none;
     }
     
@@ -3849,6 +5532,17 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     .call-btn .btn-text {
         font-size: 12px;
     }
+    
+    /* Fix compare button text overflow */
+    .compare-btn .compare-text {
+        font-size: 10px;
+        padding: 0 4px;
+    }
+    
+    .action-icon-btn.compare-btn {
+        min-width: auto;
+        padding: 6px 8px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -3857,6 +5551,11 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         gap: 6px;
         flex-wrap: nowrap;
         overflow: hidden;
+    }
+    
+    /* Show menu button */
+    .menu-btn {
+        display: flex !important;
     }
     
     .header-center {
@@ -3895,6 +5594,10 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         flex-shrink: 0;
     }
     
+    .logo-text {
+        font-size: 20px;
+    }
+    
     .action-icons {
         gap: 3px;
         display: flex;
@@ -3908,6 +5611,20 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         width: 30px;
         height: 30px;
         padding: 3px;
+        min-width: 30px;
+    }
+    
+    /* Fix compare button on smaller screens */
+    .compare-btn .compare-text {
+        font-size: 9px;
+        padding: 0 2px;
+        max-width: 45px;
+    }
+    
+    .action-icon-btn.compare-btn {
+        min-width: auto;
+        padding: 4px 6px;
+        width: auto;
     }
 }
 
@@ -3917,6 +5634,13 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         gap: 6px;
         flex-wrap: nowrap;
         overflow: hidden;
+    }
+    
+    /* Show menu button */
+    .menu-btn {
+        display: flex !important;
+        font-size: 18px;
+        padding: 6px;
     }
     
     .header-center {
@@ -3929,6 +5653,33 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
     .search-bar {
         display: none;
+    }
+    
+    .logo-text {
+        font-size: 18px;
+    }
+    
+    /* Fix compare button text - hide text on very small screens */
+    .compare-btn .compare-text {
+        display: inline !important;
+        font-size: 8px !important;
+        padding: 0 2px !important;
+        max-width: 40px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .action-icon-btn.compare-btn {
+        width: auto !important;
+        min-width: auto !important;
+        padding: 4px 6px !important;
+        justify-content: center;
+        gap: 2px;
+    }
+    
+    .action-icon-btn.compare-btn i {
+        font-size: 12px;
     }
     
     .search-input-group {
@@ -4082,14 +5833,28 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     .contact-content {
         grid-template-columns: 1fr;
         gap: 40px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Reorder: Form first on mobile */
+    .contact-form-section {
+        order: -1;
     }
 
     .support-info {
+        order: 1;
         padding: 30px;
     }
 
     .form-card {
         padding: 30px;
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .contact-support-section {
+        padding: 40px 0;
     }
 
     .benefits-grid {
@@ -4338,6 +6103,99 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     border-bottom: 1px solid #e5e7eb;
 }
 
+.filters-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-filter-close {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-filter-close:hover {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* Mobile Filter Toggle Button */
+.mobile-filter-toggle {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #EF4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 16px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.mobile-filter-toggle:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.mobile-filter-toggle i {
+    font-size: 18px;
+}
+
+.filter-badge {
+    position: absolute;
+    top: -6px;
+    right: 12px;
+    background: white;
+    color: #EF4444;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile Filter Overlay */
+.mobile-filter-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-filter-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
 .filters-header h3 {
     font-size: 18px;
     font-weight: 600;
@@ -4501,6 +6359,108 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
     }
 }
 
+/* Mobile Filter Styles */
+@media (max-width: 768px) {
+    .mobile-filter-toggle {
+        display: flex;
+    }
+    
+    .mobile-filter-overlay {
+        display: block;
+    }
+    
+    .mobile-filter-close {
+        display: flex;
+    }
+    
+    .filters-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 85vw;
+        max-width: 400px;
+        height: 100vh;
+        z-index: 999;
+        background: white;
+        box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+        transition: left 0.3s ease;
+        overflow-y: auto;
+        padding: 20px;
+        border-radius: 0;
+        order: 0;
+    }
+    
+    .filters-sidebar.mobile-open {
+        left: 0;
+    }
+    
+    .catalogue-content {
+        order: 1;
+        width: 100%;
+    }
+    
+    .filters-header {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 1;
+        padding-top: 0;
+        margin-top: 0;
+    }
+}
+
+/* Comparison Results Popup - Tablet */
+@media (max-width: 768px) {
+    .comparison-results-popup {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        padding: 20px;
+        border-radius: 16px;
+        max-height: 85vh;
+        box-sizing: border-box;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+    }
+    
+    .comparison-results-header {
+        position: relative;
+        background: transparent;
+    }
+    
+    .comparison-results-header h3 {
+        font-size: 20px;
+    }
+    
+    .comparison-table {
+        font-size: 11px;
+        min-width: 100%;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 8px 4px;
+        font-size: 11px;
+    }
+    
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+        min-width: 100px;
+        max-width: 120px;
+    }
+    
+    .comparison-table th:not(:first-child),
+    .comparison-table td:not(:first-child) {
+        min-width: 90px;
+        max-width: 120px;
+    }
+    
+    .comparison-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
 @media (max-width: 1024px) {
     .footer-sections {
         gap: 40px;
@@ -4515,31 +6475,80 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 
 @media (max-width: 768px) {
     .catalogue-container {
-        padding: 0 16px;
+        padding: 0 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .filters-sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 85vw;
+        max-width: 400px;
+        height: 100vh;
+        z-index: 999;
+        background: white;
+        box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
+        transition: left 0.3s ease;
+        overflow-y: auto;
         padding: 20px;
+        border-radius: 0;
+        box-sizing: border-box;
+    }
+    
+    .filters-sidebar.mobile-open {
+        left: 0;
+    }
+    
+    .mobile-filter-overlay {
+        display: block;
+    }
+    
+    .mobile-filter-overlay.active {
+        opacity: 1;
+        visibility: visible;
     }
     
     .catalogue-content {
-        padding: 20px;
+        padding: 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     
     .results-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 16px;
+        gap: 12px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .results-count h2 {
+        font-size: 18px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .cars-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .cars-grid .car-widget {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
     }
 }
 
-/* Tablet breakpoint for 3-column layout */
-@media (max-width: 1024px) {
+/* Tablet breakpoint for 2-column layout */
+@media (min-width: 769px) and (max-width: 1024px) {
     .cars-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
@@ -4569,13 +6578,109 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         flex: 0 0 200px;
     }
 
+    .comparison-results-popup {
+        width: 95vw !important;
+        max-width: 95vw !important;
+        max-height: 90vh !important;
+        border-radius: 16px !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+    
+    .comparison-results-header {
+        position: relative;
+        background: transparent;
+        z-index: 1;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+    
+    .comparison-results-header h3 {
+        font-size: 18px;
+    }
+    
+    .comparison-results-close {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+    }
+    
+    .comparison-back-btn {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    
+    /* Mobile Filter Button - 480px */
+    .mobile-filter-toggle {
+        display: flex !important;
+        padding: 10px 16px;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    
+    .filters-sidebar {
+        width: 90vw !important;
+        max-width: 350px !important;
+        padding: 16px !important;
+    }
+    
+    .mobile-filter-close {
+        display: flex !important;
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+    }
+    
     .comparison-table {
-        font-size: 12px;
+        font-size: 10px;
+        min-width: 100%;
+        width: 100%;
     }
 
     .comparison-table th,
     .comparison-table td {
-        padding: 8px 6px;
+        padding: 6px 3px;
+        font-size: 10px;
+    }
+    
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+        min-width: 80px;
+        max-width: 100px;
+        font-size: 9px;
+    }
+    
+    .comparison-table th:not(:first-child),
+    .comparison-table td:not(:first-child) {
+        min-width: 70px;
+        max-width: 100px;
+    }
+    
+    .comparison-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+    
+    .parameter-label {
+        font-size: 9px !important;
+        white-space: nowrap;
+    }
+    
+    .parameter-value {
+        font-size: 9px !important;
+    }
+    
+    .vehicle-year {
+        font-size: 11px !important;
+    }
+    
+    .vehicle-oem,
+    .vehicle-model {
+        font-size: 9px !important;
     }
     
     .call-widget {
@@ -4690,23 +6795,47 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
         font-size: 2rem;
     }
 
+    /* Decorative lines remain hidden */
     .get-in-touch-heading::before,
     .get-in-touch-heading::after {
-        width: 30px;
+        display: none;
     }
 
-    .get-in-touch-heading::before {
-        left: calc(50% - 120px);
-    }
-
-    .get-in-touch-heading::after {
-        right: calc(50% - 120px);
-    }
-
+    /* Contact page mobile styles */
     .contact-content {
         grid-template-columns: 1fr;
-        gap: 50px;
+        gap: 30px;
         padding: 0 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Reorder: Form first on mobile */
+    .contact-form-section {
+        order: -1;
+    }
+
+    .support-info {
+        order: 1;
+    }
+
+    .form-card {
+        padding: 24px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .contact-support-section {
+        padding: 30px 0;
+    }
+
+    .support-heading {
+        font-size: 1.8rem;
+    }
+
+    .social-heading,
+    .office-heading {
+        font-size: 1.1rem;
     }
 
     .address-section,
@@ -4734,7 +6863,7 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 /* Breadcrumb Navigation */
 .breadcrumb-container {
     background: #f8f9fa;
-    padding: 15px 0;
+    padding: 10px 0;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -4769,7 +6898,7 @@ footer .footer-container .footer-content .footer-sections .cities-flex-container
 .vehicle-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 20px 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
@@ -5846,7 +7975,11 @@ body.vehicle-page input[type="phone"]:not(#bookPhone) {
     .vehicle-container {
         grid-template-columns: 1fr;
         gap: 30px;
-        padding: 20px 15px;
+        padding: 12px 15px;
+    }
+    
+    .breadcrumb-container {
+        padding: 8px 0;
     }
     
     .main-image-container {
@@ -5887,7 +8020,15 @@ body.vehicle-page input[type="phone"]:not(#bookPhone) {
 
 @media (max-width: 480px) {
     .vehicle-main {
-        padding-top: 70px;
+        padding-top: 0;
+    }
+    
+    .breadcrumb-container {
+        padding: 6px 0;
+    }
+    
+    .vehicle-container {
+        padding: 10px 12px;
     }
     
     .main-image-container {
@@ -6536,7 +8677,23 @@ body.vehicle-page input[type="phone"]:not(#bookPhone) {
 .blog-hero {
     text-align: center;
     margin-bottom: 40px;
-    padding: 20px 20px;
+    padding: 20px 0;
+}
+
+.blog-hero .container {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .blog-hero .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-hero .container {
+        padding: 0 12px;
+    }
 }
 
 .blog-hero h1 {
@@ -6695,6 +8852,19 @@ body.vehicle-page input[type="phone"]:not(#bookPhone) {
     max-width: 800px;
     margin: 0 auto;
     padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .blog-post-detail {
+        padding: 30px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-post-detail {
+        padding: 20px 12px;
+    }
 }
 
 .back-to-blog-btn {
@@ -6774,12 +8944,355 @@ body.vehicle-page input[type="phone"]:not(#bookPhone) {
     font-weight: bold;
     color: #1f2937;
     margin: 40px 0 20px 0;
-    line-height: 1.3;
 }
 
-.content-paragraph {
-    margin-bottom: 20px;
-    color: #4b5563;
+/* ============================================
+   COMPREHENSIVE LAYOUT STANDARDIZATION
+   ============================================ */
+
+/* Standardized Typography Hierarchy */
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0 0 12px 0;
+}
+
+/* Standardized Section Padding - Responsive */
+@media (max-width: 768px) {
+    section {
+        padding: 40px 0;
+    }
+    
+    .container,
+    .content-wrapper {
+        padding: 0 16px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+        margin-bottom: 14px;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    section {
+        padding: 30px 0;
+    }
+    
+    .container,
+    .content-wrapper {
+        padding: 0 12px;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+        margin-bottom: 14px;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+    }
+    
+    h3 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+}
+
+/* Home Page - Standardized Spacing */
+/* Hero section should never have padding */
+.home-page .hero-section {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.home-page section:not(.hero-section) {
+    padding: 60px 0;
+}
+
+.home-page .container {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .home-page section:not(.hero-section) {
+        padding: 40px 0;
+    }
+    
+    .home-page .container {
+        padding: 0 16px;
+    }
+    
+    .home-page .hero-section {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-page section:not(.hero-section) {
+        padding: 30px 0;
+    }
+    
+    .home-page .container {
+        padding: 0 12px;
+    }
+    
+    .home-page .hero-section {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+}
+
+/* About Page - Standardized Spacing */
+.about-content {
+    padding: 60px 0;
+}
+
+.about-content .container {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        padding: 40px 0;
+    }
+    
+    .about-content .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-content {
+        padding: 30px 0;
+    }
+    
+    .about-content .container {
+        padding: 0 12px;
+    }
+}
+
+/* Blog Page - Standardized Spacing */
+.blog-main {
+    padding: 40px 0;
+}
+
+.blog-main .container {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .blog-main {
+        padding: 30px 0;
+    }
+    
+    .blog-main .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .blog-main {
+        padding: 24px 0;
+    }
+    
+    .blog-main .container {
+        padding: 0 12px;
+    }
+}
+
+/* Terms/Privacy/Refund Pages - Standardized Spacing */
+.terms-content,
+.privacy-content,
+.refund-content {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .terms-content,
+    .privacy-content,
+    .refund-content {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .terms-content,
+    .privacy-content,
+    .refund-content {
+        padding: 0 12px;
+    }
+}
+
+/* Contact Page - Additional Standardization */
+.contact-support-section {
+    padding: 60px 0;
+}
+
+.contact-support-section .container {
+    padding: 0 20px;
+}
+
+@media (max-width: 768px) {
+    .contact-support-section {
+        padding: 40px 0;
+    }
+    
+    .contact-support-section .container {
+        padding: 0 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-support-section {
+        padding: 30px 0;
+    }
+    
+    .contact-support-section .container {
+        padding: 0 12px;
+    }
+}
+
+/* Catalogue Page - Ensure proper spacing */
+.catalogue-main {
+    padding: 20px 0;
+}
+
+@media (max-width: 768px) {
+    .catalogue-main {
+        padding: 15px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .catalogue-main {
+        padding: 10px 0;
+    }
+}
+
+/* Vehicle Page - Ensure proper spacing */
+.vehicle-container {
+    padding: 20px 20px;
+}
+
+@media (max-width: 768px) {
+    .vehicle-container {
+        padding: 12px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vehicle-container {
+        padding: 10px 12px;
+    }
+}
+
+/* Ensure all sections have proper container padding */
+/* Hero section should NEVER have padding - it's full-width */
+.hero-section {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+}
+
+.hero-section .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.hero-background {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.innovolt-banner-image {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.car-widgets-section,
+.benefits-section,
+.how-it-works-section,
+.cars-india-section,
+.faq-section {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.car-widgets-section .container,
+.benefits-section .container,
+.how-it-works-section .container,
+.cars-india-section .container,
+.faq-section .container {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+@media (max-width: 768px) {
+    .car-widgets-section .container,
+    .benefits-section .container,
+    .how-it-works-section .container,
+    .cars-india-section .container,
+    .faq-section .container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .car-widgets-section .container,
+    .benefits-section .container,
+    .how-it-works-section .container,
+    .cars-india-section .container,
+    .faq-section .container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
 }
 
 .blog-post {
